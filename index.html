@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiểm tra đầu vào SAT Reading &amp; Writing — Lò luyện SAT Thủ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#324dc7; --blue-d:#2a3fa8; --blue-l:#e8ecfb;
+  --ink:#1e1e1e; --muted:#5f6368; --line:#d0d4dc; --bg:#ffffff; --foot:#e9edf6;
+  --red:#c8102e; --green:#0f7b3f; --yellow:#fde68a;
+  --serif:"Noto Serif","Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"Inter","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
+
+/* ============ INTAKE / RESULT SCREENS ============ */
+.screen{min-height:100%;display:flex;align-items:center;justify-content:center;padding:32px 16px;background:linear-gradient(180deg,#f4f6fc 0%,#fff 60%)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(30,40,90,.08);width:100%;max-width:560px;padding:32px}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.brand .logo{width:38px;height:38px;border-radius:9px;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:800;font-size:12px;letter-spacing:.3px}
+.brand .bname{font-weight:700;font-size:15px}
+.brand .bsub{font-size:12.5px;color:var(--muted)}
+.card h1{font-size:24px;margin:0 0 6px;font-weight:700}
+.card .lead{color:var(--muted);margin:0 0 20px;font-size:14.5px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.pill{background:var(--blue-l);color:var(--blue-d);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+.field input{width:100%;font:inherit;font-size:15px;padding:11px 13px;border:1px solid #b9bfcc;border-radius:8px;outline:none}
+.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(50,77,199,.15)}
+.err{color:var(--red);font-size:13px;min-height:18px;margin:-4px 0 6px}
+.rules{background:#f7f8fb;border:1px solid #e6e9f0;border-radius:10px;padding:14px 16px 14px 34px;margin:6px 0 20px;font-size:13.5px;line-height:1.55;color:#33363c}
+.rules li{margin:2px 0}
+.btn{border:0;border-radius:999px;padding:11px 26px;font-size:15px;font-weight:700;background:var(--blue);color:#fff}
+.btn:hover{background:var(--blue-d)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.block{width:100%}
+.btn.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.btn.ghost:hover{background:var(--blue-l)}
+.btn.sm{padding:7px 16px;font-size:13.5px}
+.linkbtn{background:none;border:0;color:var(--muted);font-size:12.5px;text-decoration:underline;padding:4px}
+.foot-note{text-align:center;margin-top:14px}
+
+/* result */
+.score-hero{text-align:center;padding:18px 0 8px}
+.score-hero .big{font-size:56px;font-weight:800;color:var(--blue);line-height:1}
+.score-hero .big small{font-size:24px;color:var(--muted);font-weight:600}
+.score-hero .lbl{color:var(--muted);margin-top:6px;font-size:14px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.stat{border:1px solid #e3e6ee;border-radius:10px;padding:12px;text-align:center}
+.stat b{display:block;font-size:22px}
+.stat span{font-size:12.5px;color:var(--muted)}
+.stat.ok b{color:var(--green)} .stat.bad b{color:var(--red)} .stat.na b{color:#8a8f98}
+.send-status{border-radius:10px;padding:11px 14px;font-size:13.5px;margin:12px 0;display:flex;gap:10px;align-items:flex-start;line-height:1.45}
+.send-status.ok{background:#e7f6ee;color:#0d5c31}
+.send-status.wait{background:#f3f4f8;color:#40444c}
+.send-status.fail{background:#fff4e5;color:#7a4b00}
+.info-grid{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px;margin:4px 0 6px}
+.info-grid dt{color:var(--muted)} .info-grid dd{margin:0;font-weight:600}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+/* ============ TEST (BLUEBOOK) ============ */
+#test{position:fixed;inset:0;display:flex;flex-direction:column;background:#fff}
+.dash{height:3px;flex:none;background:repeating-linear-gradient(90deg,#1b2a6b 0 22px,transparent 22px 26px,#e8b100 26px 40px,transparent 40px 44px,#2fa36b 44px 58px,transparent 58px 62px)}
+header.tb{flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 28px 8px;background:#fff}
+.tb-left .sec{font-weight:700;font-size:17px}
+.tb-left .dir{background:none;border:0;padding:4px 0 0;font-size:14px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:4px}
+.tb-center{text-align:center}
+.timer{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.5px;min-height:26px}
+.timer.warn{color:var(--red)}
+.timer .clock{display:none}
+.timer.hide .t{display:none}
+.timer.hide .clock{display:inline-block}
+.hidebtn{margin-top:3px;border:1px solid #6b6f78;background:#fff;border-radius:999px;padding:2px 14px;font-size:12.5px;font-weight:600}
+.tb-right{display:flex;justify-content:flex-end;gap:18px}
+.tool{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12.5px;font-weight:600;color:var(--ink);padding:2px 4px}
+.tool svg{width:22px;height:22px}
+.tool.on{color:var(--blue)}
+
+main.split{flex:1;min-height:0;display:grid;grid-template-columns:var(--left,50%) 6px 1fr}
+.pane{overflow:auto;min-height:0}
+.pane-left{padding:30px 34px 40px 40px}
+.pane-right{padding:24px 40px 40px 30px}
+.divider{background:#d6d9df;position:relative;cursor:col-resize;touch-action:none}
+.divider .grip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:40px;border-radius:6px;background:#1e1e1e;display:grid;place-items:center}
+.divider .grip svg{width:14px;height:14px;fill:#fff}
+
+.passage{font-family:var(--serif);font-size:16.5px;line-height:1.68;max-width:720px}
+.passage p{margin:0 0 14px}
+.passage .intro{margin-bottom:12px}
+.passage .lit{text-indent:1.6em;margin-bottom:6px}
+.passage .texthead{font-family:var(--sans);font-weight:700;font-size:15.5px;margin:20px 0 6px}
+.passage .texthead:first-child{margin-top:0}
+.passage ul.notes{margin:4px 0 0;padding-left:22px}
+.passage ul.notes li{margin-bottom:8px}
+.passage u{text-decoration-thickness:1.5px;text-underline-offset:3px}
+.blank{display:inline-block;width:64px;border-bottom:1.6px solid currentColor;vertical-align:baseline;margin:0 3px;transform:translateY(-2px)}
+.figure{margin:0 0 20px;overflow-x:auto}
+.tcaption{font-family:var(--sans);font-weight:700;text-align:center;font-size:14.5px;margin:0 0 8px!important}
+.dtable{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14px;line-height:1.35}
+.dtable th,.dtable td{border:1px solid #1e1e1e;padding:7px 9px;text-align:center;vertical-align:middle}
+.dtable th{font-weight:700;background:#f4f5f7}
+.dtable td:first-child{text-align:left}
+mark.hl{background:var(--yellow);color:inherit;border-bottom:2px solid #e2b500;cursor:pointer;padding:0}
+
+.qhead{display:flex;align-items:center;gap:12px;background:#eef0f3;border-bottom:2px dashed #9aa0aa;padding:0 10px 0 0;height:40px}
+.qnum{background:#1e1e1e;color:#fff;font-weight:700;width:36px;height:40px;display:grid;place-items:center;font-size:16px}
+.mark{background:none;border:0;display:flex;align-items:center;gap:6px;font-size:14.5px;font-weight:600;color:var(--ink);padding:4px 2px}
+.mark svg{width:16px;height:20px}
+.mark svg path{fill:none;stroke:#1e1e1e;stroke-width:1.6}
+.mark.on svg path{fill:var(--red);stroke:var(--red)}
+.mark.on{font-weight:700}
+.abc{margin-left:auto;border:1.5px solid #1e1e1e;background:#fff;border-radius:5px;padding:1px 6px;font-size:12.5px;font-weight:800;position:relative;height:26px;letter-spacing:.5px}
+.abc::after{content:"";position:absolute;left:3px;right:3px;top:50%;border-top:1.5px solid currentColor;transform:rotate(-12deg)}
+.abc.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.stem{font-family:var(--serif);font-size:16.5px;line-height:1.6;margin:18px 0 18px}
+.choices{display:flex;flex-direction:column;gap:12px}
+.crow{display:flex;align-items:center;gap:10px}
+.choice{flex:1;display:flex;align-items:center;gap:14px;text-align:left;background:#fff;border:1.5px solid #1e1e1e;border-radius:10px;padding:10px 14px;font-family:var(--serif);font-size:16px;line-height:1.5;color:var(--ink);position:relative;min-height:52px}
+.choice:hover{border-color:var(--blue)}
+.choice .ltr{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid #1e1e1e;display:grid;place-items:center;font-family:var(--sans);font-weight:700;font-size:14px}
+.choice.sel{border:3px solid var(--blue);padding:8.5px 12.5px}
+.choice.sel .ltr{background:var(--blue);border-color:var(--blue);color:#fff}
+.choice.x{color:#9aa0a8;border-color:#b8bcc4}
+.choice.x .ltr{border-color:#b8bcc4;color:#9aa0a8}
+.choice.x::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;border-top:1.6px solid #3c3f44}
+.elim{flex:none;width:36px;background:none;border:0;padding:0;display:none;font-size:12.5px;font-weight:700;color:var(--ink)}
+.abc-on .elim{display:block}
+.elim .el{width:24px;height:24px;border-radius:50%;border:1.5px solid #1e1e1e;display:grid;place-items:center;margin:0 auto;position:relative;font-size:12px}
+.elim .el::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;border-top:1.5px solid #1e1e1e}
+.elim.undo{text-decoration:underline}
+
+footer.fb{flex:none;background:var(--foot);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:12px 28px;position:relative}
+.fb .who{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qbtn{background:#1e1e1e;color:#fff;border:0;border-radius:8px;padding:8px 16px;font-size:14.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+.qbtn svg{width:12px;height:12px;fill:#fff;transition:transform .15s}
+.qbtn.open svg{transform:rotate(180deg)}
+.navbtns{display:flex;justify-content:flex-end;gap:10px}
+.navbtns .btn{padding:9px 26px}
+
+/* navigator popup */
+.qnav{position:absolute;bottom:64px;left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.28);width:min(560px,94vw);padding:18px 22px 20px;z-index:30}
+.qnav::after{content:"";position:absolute;bottom:-9px;left:50%;transform:translateX(-50%) rotate(45deg);width:18px;height:18px;background:#fff}
+.qnav h3{margin:0 0 12px;font-size:16px;text-align:center}
+.qnav .x{position:absolute;right:12px;top:10px;background:none;border:0;font-size:22px;line-height:1;color:#444}
+.legend{display:flex;justify-content:center;gap:22px;font-size:13px;border-bottom:1px solid #e3e5ea;padding-bottom:12px;margin-bottom:14px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:6px}
+.lg-un{width:14px;height:14px;border:1.5px dashed #555;display:inline-block}
+.lg-rev svg{width:11px;height:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:12px 10px}
+.gcell{position:relative;height:38px;border:1.5px dashed #6a6e75;background:#fff;color:var(--blue);font-weight:700;font-size:15px;border-radius:2px}
+.gcell.ans{background:var(--blue);border:1.5px solid var(--blue);color:#fff}
+.gcell .flag{position:absolute;top:-7px;right:-5px;width:11px;height:15px}
+.gcell .pin{position:absolute;top:-17px;left:50%;transform:translateX(-50%);width:14px;height:16px}
+.qnav .goto{display:block;margin:18px auto 0}
+
+/* review page */
+.review{flex:1;overflow:auto;padding:36px 20px 40px}
+.review-in{max-width:760px;margin:0 auto;text-align:center}
+.review h2{font-size:28px;margin:0 0 10px}
+.review p.sub{color:#333;font-size:15px;margin:0 auto 26px;max-width:620px;line-height:1.5}
+.rcard{background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.12);padding:20px 26px 26px;text-align:left}
+.rcard .rtop{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #e3e5ea;padding-bottom:12px;margin-bottom:22px;flex-wrap:wrap}
+.rcard .rtop b{font-size:16px}
+.rcard .legend{border:0;margin:0;padding:0;justify-content:flex-end}
+
+/* modal / toast */
+.overlay{position:fixed;inset:0;background:rgba(15,20,40,.45);display:grid;place-items:center;z-index:300;padding:16px}
+.modal{background:#fff;border-radius:14px;max-width:520px;width:100%;padding:24px 26px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow:auto}
+.modal h3{margin:0 0 10px;font-size:19px}
+.modal p{margin:0 0 10px;line-height:1.55;font-size:14.5px;color:#33363c}
+.modal .row{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.dirpanel{position:absolute;top:66px;left:20px;z-index:40;background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:640px;width:calc(100vw - 40px);padding:22px 26px;font-size:15px;line-height:1.6}
+.dirpanel h3{margin:0 0 8px}
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1e1e1e;color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:320;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.hlpop{position:fixed;z-index:60;background:#1e1e1e;border-radius:8px;padding:4px;display:flex;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.hlpop button{background:none;border:0;color:#fff;font-size:13px;font-weight:600;padding:6px 10px;border-radius:6px;display:flex;align-items:center;gap:6px}
+.hlpop button:hover{background:#3a3a3a}
+.hlpop .sw{width:14px;height:14px;border-radius:3px;background:var(--yellow);display:inline-block}
+
+/* lock screen */
+.lock{position:fixed;inset:0;z-index:190;background:#151a2e;display:grid;place-items:center;padding:20px}
+.lock-card{background:#fff;border-radius:16px;max-width:470px;width:100%;padding:30px 28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.lock-ic{width:58px;height:58px;border-radius:50%;background:#fde8ec;color:var(--red);display:grid;place-items:center;font-size:30px;font-weight:800;margin:0 auto 14px}
+.lock[data-state=resume] .lock-ic{background:var(--blue-l);color:var(--blue)}
+.lock h2{margin:0 0 10px;font-size:22px}
+.lock p{color:#40444c;line-height:1.6;margin:0 0 20px;font-size:15px}
+
+/* ============ TEACHER PANEL ============ */
+#teacher{position:fixed;inset:0;background:#f4f6fb;z-index:200;overflow:auto}
+.t-top{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px 24px;z-index:2}
+.t-top h2{font-size:17px;margin:0;flex:1}
+.t-wrap{max-width:1060px;margin:0 auto;padding:22px 20px 60px}
+.t-card{background:#fff;border:1px solid #e1e4ec;border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.t-card h3{margin:0 0 12px;font-size:15.5px}
+.t-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.kpi{border:1px solid #e6e9f0;border-radius:10px;padding:12px 14px}
+.kpi b{font-size:24px;display:block}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.kpi.ok b{color:var(--green)} .kpi.bad b{color:var(--red)} .kpi.trap b{color:#b45309}
+.bars{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 28px}
+.bar .bl{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px}
+.bar .bt{height:9px;background:#eceef3;border-radius:99px;overflow:hidden}
+.bar .bt i{display:block;height:100%;background:var(--blue);border-radius:99px}
+table.det{width:100%;border-collapse:collapse;font-size:13.5px}
+table.det th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);border-bottom:1.5px solid #dfe2ea;padding:8px 8px}
+table.det td{border-bottom:1px solid #eef0f4;padding:7px 8px;vertical-align:middle}
+table.det tr.ok td.kq{color:var(--green);font-weight:700}
+table.det tr.bad td.kq{color:var(--red);font-weight:700}
+table.det tr.na td.kq{color:#8a8f98;font-weight:700}
+table.det tr.bad{background:#fff7f7}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:99px;padding:2px 8px;margin-right:4px}
+.tag.trap{background:#fff1d6;color:#92400e}
+.tag.rev{background:#fde8ec;color:#a3112b}
+.tag.E{background:#e7f6ee;color:#0d5c31} .tag.M{background:#eef1fb;color:#2a3fa8} .tag.H{background:#fde8ec;color:#a3112b}
+.ltrc{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1.5px solid #c9cdd6;font-weight:700;font-size:12.5px}
+.ltrc.ok{background:var(--green);border-color:var(--green);color:#fff}
+.ltrc.bad{background:var(--red);border-color:var(--red);color:#fff}
+.ltrc.key{border-color:var(--green);color:var(--green)}
+.hist{width:100%;border-collapse:collapse;font-size:13.5px}
+.hist th{text-align:left;font-size:12px;color:var(--muted);padding:6px 8px;border-bottom:1.5px solid #dfe2ea}
+.hist td{padding:8px;border-bottom:1px solid #eef0f4}
+.hist tr:hover td{background:#f6f8fd;cursor:pointer}
+.t-card textarea{width:100%;min-height:76px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;border:1px solid #c5cad6;border-radius:8px;padding:10px}
+.t-card input[type=text],.t-card input[type=password]{font:inherit;font-size:14px;padding:8px 10px;border:1px solid #c5cad6;border-radius:8px}
+.muted{color:var(--muted);font-size:13px}
+.okc{color:var(--green);font-weight:700}.badc{color:var(--red);font-weight:700}
+code.k{background:#f1f3f8;border-radius:6px;padding:2px 6px;font-size:12.5px;word-break:break-all}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:860px){
+  header.tb{padding:8px 12px;grid-template-columns:1fr auto auto}
+  .tb-left .sec{font-size:13.5px}
+  .tb-right{gap:6px}
+  .tool span{display:none}
+  main.split{display:block;overflow:auto}
+  .divider{display:none}
+  .pane{overflow:visible}
+  .pane-left{padding:18px 16px 10px;border-bottom:6px solid #e3e6ec}
+  .pane-right{padding:14px 16px 30px}
+  .passage,.stem{font-size:16px}
+  .dtable{font-size:12.5px}
+  .dtable th,.dtable td{padding:5px 6px}
+  .tb-left .sec{font-size:12.5px}
+  footer.fb{padding:10px 12px;grid-template-columns:auto 1fr auto;gap:8px}
+  .fb .who{display:none}
+  .qbtn{justify-self:start}
+  .navbtns .btn{padding:8px 16px}
+  .t-kpis{grid-template-columns:repeat(2,1fr)}
+  .bars{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:repeat(3,1fr)}
+  .card{padding:24px 20px}
+  .qnav{bottom:60px}
+}
+@media print{#test,.t-top{display:none} #teacher{position:static}}
+
+</style>
+</head>
+<body>
+
+<!-- ============ MÀN HÌNH NHẬP THÔNG TIN ============ -->
+<section id="intake" class="screen hidden">
+  <div class="card">
+    <div class="brand"><div class="logo">LLST</div><div><div class="bname">Lò luyện SAT Thủ</div><div class="bsub">loluyensatthu.com</div></div></div>
+    <h1>Kiểm tra đầu vào — SAT Reading &amp; Writing</h1>
+    <p class="lead">Giao diện giống phần mềm Bluebook của College Board. Điền thông tin rồi bấm <b>Bắt đầu làm bài</b>.</p>
+    <div class="pills"><span class="pill">27 câu</span><span class="pill">32 phút</span><span class="pill">Trắc nghiệm 4 đáp án</span></div>
+    <form id="intakeForm" novalidate>
+      <div class="field"><label for="fName">Họ và tên</label><input id="fName" autocomplete="name" maxlength="60" placeholder="VD: Nguyễn Minh Anh"></div>
+      <div class="field"><label for="fAge">Tuổi</label><input id="fAge" type="number" inputmode="numeric" min="8" max="80" placeholder="VD: 16"></div>
+      <div class="err" id="fErr"></div>
+      <ul class="rules">
+        <li>Đồng hồ <b>32 phút</b> chạy ngay khi bấm Bắt đầu và không tạm dừng được.</li>
+        <li>Hết giờ, bài sẽ <b>tự động nộp</b>.</li>
+        <li>Công cụ như Bluebook: <b>Mark for Review</b>, gạch đáp án <b>ABC</b>, <b>highlight</b> bài đọc, bảng chuyển câu ở thanh dưới.</li>
+        <li>Lỡ tải lại trang thì bài làm và thời gian vẫn được giữ nguyên.</li>
+        <li id="strictRule"></li>
+        <li id="strictRule2" class="hidden">Không sao chép (copy) được nội dung đề.</li>
+      </ul>
+      <button class="btn block" type="submit">Bắt đầu làm bài</button>
+    </form>
+    <div class="foot-note"><button class="linkbtn" data-teacher>Dành cho giáo viên</button></div>
+  </div>
+</section>
+
+<!-- ============ GIAO DIỆN LÀM BÀI (BLUEBOOK) ============ -->
+<section id="test" class="hidden">
+  <header class="tb">
+    <div class="tb-left">
+      <div class="sec" id="secLabel"></div>
+      <button class="dir" id="dirBtn">Directions <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    </div>
+    <div class="tb-center">
+      <div class="timer" id="timer"><span class="t" id="timerText">32:00</span><span class="clock"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div>
+      <button class="hidebtn" id="hideBtn">Hide</button>
+    </div>
+    <div class="tb-right">
+      <button class="tool" id="hlTool" title="Highlight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M14.5 4.5l5 5L10 19H5v-5z"/><path d="M3 22h9"/></svg><span>Highlights &amp; Notes</span></button>
+    </div>
+  </header>
+  <div class="dash"></div>
+
+  <div id="dirPanel" class="dirpanel hidden">
+    <h3>Directions</h3>
+    <p>This module contains 27 questions. Each question includes one or more passages, which may include a table or a set of notes. Read each passage and question carefully, and then choose the best answer to the question based on the passage(s).</p>
+    <p>All questions in this module are multiple-choice with four answer choices. Each question has a single best answer.</p>
+    <p style="font-size:14px;color:#555"><b>Tools:</b> Mark for Review · ABC (cross out answer choices) · Highlight (select text in the passage) · Question menu at the bottom to jump between questions.</p>
+    <div style="text-align:right"><button class="btn sm" id="dirClose">Close</button></div>
+  </div>
+
+  <main class="split" id="split">
+    <div class="pane pane-left" id="paneL"><div class="passage" id="passage"></div></div>
+    <div class="divider" id="divider"><div class="grip"><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6zM15 6l6 6-6 6z"/></svg></div></div>
+    <div class="pane pane-right" id="paneR">
+      <div class="qhead">
+        <div class="qnum" id="qnum">1</div>
+        <button class="mark" id="markBtn"><svg viewBox="0 0 16 20"><path d="M2 1.5h12v17l-6-4.5-6 4.5z"/></svg>Mark for Review</button>
+        <button class="abc" id="abcBtn" title="Cross out answer choices">ABC</button>
+      </div>
+      <div class="stem" id="stem"></div>
+      <div class="choices" id="choices"></div>
+    </div>
+  </main>
+
+  <div class="review hidden" id="review">
+    <div class="review-in">
+      <h2>Check Your Work</h2>
+      <p class="sub">Before you submit, make sure you have answered every question. Click a question number to go back to it. When you’re ready, click <b>Submit</b>.</p>
+      <div class="rcard">
+        <div class="rtop"><b id="revTitle"></b>
+          <div class="legend">
+            <span><i class="lg-un"></i>Unanswered</span>
+            <span class="lg-rev"><svg viewBox="0 0 11 15"><path d="M0 0h11v15L5.5 11 0 15z" fill="#c8102e"/></svg>For Review</span>
+          </div>
+        </div>
+        <div class="grid" id="revGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash"></div>
+  <footer class="fb">
+    <div class="who" id="who"></div>
+    <div style="position:relative;justify-self:center">
+      <button class="qbtn" id="qBtn"><span id="qBtnText">Question 1 of 27</span><svg viewBox="0 0 12 12"><path d="M1 8l5-5 5 5z"/></svg></button>
+    </div>
+    <div class="navbtns"><button class="btn" id="backBtn">Back</button><button class="btn" id="nextBtn">Next</button></div>
+    <div class="qnav hidden" id="qnav">
+      <button class="x" id="qnavClose" aria-label="Close">×</button>
+      <h3 id="qnavTitle"></h3>
+      <div class="legend">
+        <span><svg width="14" height="16" viewBox="0 0 14 16"><path d="M7 0C3.7 0 1 2.6 1 5.9 1 10.3 7 16 7 16s6-5.7 6-10.1C13 2.6 10.3 0 7 0z" fill="#1e1e1e"/><circle cx="7" cy="6" r="2.3" fill="#fff"/></svg>Current</span>
+        <span><i class="lg-un"></i>Unanswered</span>
+        <span class="lg-rev"><svg viewBox="0 0 11 15"><path d="M0 0h11v15L5.5 11 0 15z" fill="#c8102e"/></svg>For Review</span>
+      </div>
+      <div class="grid" id="qnavGrid"></div>
+      <button class="btn ghost sm goto" id="gotoReview">Go to Review Page</button>
+    </div>
+  </footer>
+</section>
+
+<!-- ============ MÀN HÌNH KẾT QUẢ ============ -->
+<section id="result" class="screen hidden">
+  <div class="card" id="resultCard"></div>
+</section>
+
+<div id="lock" class="lock hidden"><div class="lock-card"><div class="lock-ic" id="lockIc">!</div><h2 id="lockTitle"></h2><p id="lockMsg"></p><button class="btn" id="lockBtn">Tiếp tục làm bài</button></div></div>
+
+<div id="hlpop" class="hlpop hidden"><button id="hlApply"><i class="sw"></i>Highlight</button></div>
+
+<script>
+/* =====================================================================
+   CÀI ĐẶT — THẦY CHỈ CẦN SỬA KHỐI NÀY
+   ===================================================================== */
+const CONFIG = {
+  // Link Web App của Google Apps Script (xem file google-sheet-apps-script.gs).
+  // Để trống '' nếu không dùng Google Sheet — khi đó học viên gửi "mã kết quả" qua Zalo.
+  SHEET_URL: 'https://script.google.com/macros/s/AKfycbxT_-4tavWnvFqPIlCpj4Wv91H6Qt1R8l4Em31xqUWzP16IJx5RI_pxh5Jn46yz7y1t/exec',
+
+  // true  = học viên thấy số câu đúng/sai sau khi nộp (không thấy đáp án từng câu)
+  // false = học viên chỉ thấy "Đã nộp bài", điểm chỉ giáo viên xem
+  SHOW_SCORE_TO_STUDENT: true,
+
+  // CHẾ ĐỘ THI NGHIÊM — mở toàn màn hình, che đề khi học viên rời trang, chặn copy
+  STRICT_MODE: true,
+  REQUIRE_FULLSCREEN: true,   // máy tính & Android: bắt buộc toàn màn hình (iPhone không hỗ trợ)
+  MAX_VIOLATIONS: 0,          // rời bài đủ số lần này → tự động nộp. 0 = chỉ ghi lại, không tự nộp
+
+  // Mã băm của PIN giáo viên (không ghi PIN thật ở đây để học viên xem mã nguồn cũng không biết).
+  // Muốn đổi PIN: vào Trang giáo viên → Cài đặt → tạo mã mới rồi dán vào đây.
+  TEACHER_PIN_HASH: '003d64f93e93f4',
+
+  DURATION_MIN: 32,
+  TEST_ID: 'RW-M2-HARD-V4',
+  SECTION_LABEL: 'Section 1, Module 2: Reading and Writing'
+};
+</script>
+<script>
+/* ===== ĐỀ: R&W Module 2 Hard — Ver 4 (27 câu) ===== */
+const B = '<span class="blank" aria-label="blank"></span>';
+const QUESTIONS = [
+/* ---------- Câu 1 ---------- */
+{ type:'Words in Context', domain:'cs', diff:'Easy',
+  passage:`<p>Archaeologists once described the abandonment of the great Maya cities of the southern lowlands as a sudden “collapse.” Many now regard the process as ${B}: over roughly 150 years beginning in the mid-700s CE, cities declined at different times and for different combinations of reasons, and some continued to flourish while others were already being deserted.</p>`,
+  q:`Which choice completes the text with the most logical and precise word or phrase?`,
+  c:[`precipitous`,`uniform`,`piecemeal`,`cyclical`] },
+
+/* ---------- Câu 2 ---------- */
+{ type:'Words in Context', domain:'cs', diff:'Medium',
+  passage:`<p>The morning after Orson Welles’s 1938 radio drama <em>The War of the Worlds</em> aired, newspapers reported that the broadcast had set off a nationwide panic. Media historians Jefferson Pooley and Michael Socolow have argued that this account is ${B}: a ratings survey of some 5,000 households conducted that evening found that only about 2 percent were listening to a radio play at all, an audience far too small to account for a panic on the scale the newspapers described.</p>`,
+  q:`Which choice completes the text with the most logical and precise word or phrase?`,
+  c:[`unverifiable`,`untenable`,`understated`,`ambiguous`] },
+
+/* ---------- Câu 3 ---------- */
+{ type:'Words in Context', domain:'cs', diff:'Medium',
+  passage:`<p class="intro">The following text is from James Joyce’s 1914 short story “Araby.”</p>
+<p>North Richmond Street, being blind, was a quiet street except at the hour when the Christian Brothers’ School set the boys free. An uninhabited house of two storeys stood at the blind end, detached from its neighbours in a square ground. The other houses of the street, conscious of decent lives within them, gazed at one another with brown imperturbable faces.</p>`,
+  q:`As used in the text, what does the word “blind” most nearly mean?`,
+  c:[`sightless`,`dimly lit`,`unremarkable`,`closed at one end`] },
+
+/* ---------- Câu 4 ---------- */
+{ type:'Text Structure and Purpose', domain:'cs', diff:'Medium',
+  passage:`<p>Archaeologists have long treated sharp-edged stone flakes as a hallmark of early human toolmaking. In 2016, however, Tomos Proffitt and colleagues reported that wild bearded capuchin monkeys in Brazil’s Serra da Capivara National Park produce such flakes regularly. The monkeys smash quartzite cobbles against rocky surfaces and lick the powdered stone, breaking off flakes that closely resemble some made by early hominins. <u>The monkeys show no interest in the flakes themselves and never use them as tools.</u> The researchers argue that the presence of sharp-edged flakes at an ancient site may not be enough to show that anyone made them deliberately.</p>`,
+  q:`Which choice best describes the function of the underlined sentence in the text as a whole?`,
+  c:[`It reinforces the idea that the flakes are a by-product of another activity, which supports the researchers’ conclusion about what such flakes can show.`,
+     `It identifies a characteristic that archaeologists could use to distinguish flakes made by capuchins from flakes made by early hominins.`,
+     `It suggests that capuchins, unlike early hominins, are unable to recognize that a sharp edge could be useful.`,
+     `It explains why the flakes that capuchins produce so closely resemble those made by early hominins.`] },
+
+/* ---------- Câu 5 ---------- */
+{ type:'Text Structure and Purpose', domain:'cs', diff:'Medium',
+  passage:`<p class="intro">The following text is from Virginia Woolf’s 1925 novel <em>Mrs. Dalloway</em>. Clarissa Dalloway is preparing for a party she will give that evening; Bourton is the country house where she spent her youth.</p>
+<p class="lit">Mrs. Dalloway said she would buy the flowers herself.</p>
+<p class="lit">For Lucy had her work cut out for her. The doors would be taken off their hinges; Rumpelmayer’s men were coming. And then, thought Clarissa Dalloway, what a morning—fresh as if issued to children on a beach.</p>
+<p class="lit">What a lark! What a plunge! For so it had always seemed to her, when, with a little squeak of the hinges, which she could hear now, she had burst open the French windows and plunged at Bourton into the open air.</p>`,
+  q:`Which choice best describes the overall structure of the text?`,
+  c:[`A character explains a decision and then recalls the past experience that led her to make it.`,
+     `A character’s practical decision gives way to her delight in the morning, which carries her back to a memory of her youth.`,
+     `A character’s pleasure in the morning is interrupted by her worries about the preparations taking place in her house.`,
+     `A character recalls a morning from her youth and then compares it unfavorably with the morning she is now experiencing.`] },
+
+/* ---------- Câu 6 ---------- */
+{ type:'Cross-Text Connections', domain:'cs', diff:'Hard',
+  passage:`<p class="texthead">Text 1</p>
+<p>In a 1968 study, psychologists John Darley and Bibb Latané had college students talk over an intercom with what they believed were other participants in separate rooms. When one “participant”—actually a recording—seemed to have a seizure, 85 percent of the students who believed that they alone could hear him left their room to seek help. Among students who believed that four other listeners were present, only 31 percent did. The presence of other bystanders, Darley and Latané concluded, makes each individual less likely to intervene.</p>
+<p class="texthead">Text 2</p>
+<p>Richard Philpot and colleagues examined security-camera footage of 219 public arguments and assaults in Amsterdam, Lancaster in England, and Cape Town in South Africa. In about 90 percent of the incidents, at least one bystander stepped in to help, and the more bystanders were present, the more likely it was that someone intervened.</p>`,
+  q:`Based on the texts, how would Darley and Latané (Text 1) most likely respond to the findings reported in Text 2?`,
+  c:[`By acknowledging that the presence of other bystanders makes people more willing to help than they would be if they were alone.`,
+     `By arguing that bystanders behave differently in public disputes than in medical emergencies such as the one staged in their study.`,
+     `By dismissing the findings because they come from security-camera footage rather than from a controlled experiment.`,
+     `By suggesting that the findings may be consistent with their own, since a larger group can be more likely to include a helper even if each member is less likely to help.`] },
+
+/* ---------- Câu 7 ---------- */
+{ type:'Cross-Text Connections', domain:'cs', diff:'Hard',
+  passage:`<p class="texthead">Text 1</p>
+<p>Dirk Hoffmann and colleagues used uranium-thorium dating to measure the ages of thin mineral crusts that had formed on top of red paintings in three Spanish caves. Because a crust must be younger than the paint beneath it, the crusts’ ages set minimum ages for the paintings: in one cave, more than 64,000 years. That is about 20,000 years before modern humans are thought to have reached Europe, so the team concluded that Neanderthals made the paintings.</p>
+<p class="texthead">Text 2</p>
+<p>Uranium-thorium dating assumes that the uranium in a crust has stayed put since the crust formed. Archaeologist Randall White and colleagues point out that water seeping over cave walls can leach uranium from such crusts, which would make them appear older than they are. If the crusts are in fact much younger, the paintings could be the work of modern humans, and the case for Neanderthal artists, they argue, remains unproven.</p>`,
+  q:`Based on the texts, both Hoffmann’s team (Text 1) and White’s team (Text 2) would most likely agree with which statement?`,
+  c:[`The crusts covering the paintings formed more than 64,000 years ago.`,
+     `Neanderthals were capable of producing paintings like those in the Spanish caves.`,
+     `Who made the paintings depends on how old the paintings actually are.`,
+     `Water seeping over the cave walls has removed uranium from the crusts.`] },
+
+/* ---------- Câu 8 ---------- */
+{ type:'Central Ideas and Details', domain:'ii', diff:'Hard',
+  passage:`<p class="intro">The following text is from Jane Austen’s 1817 novel <em>Persuasion</em>. The Baronetage is a reference book that lists Britain’s baronets—holders of a hereditary title—along with their family histories and the dates on which their titles were created.</p>
+<p class="lit">Sir Walter Elliot, of Kellynch Hall, in Somersetshire, was a man who, for his own amusement, never took up any book but the Baronetage; there he found occupation for an idle hour, and consolation in a distressed one; there his faculties were roused into admiration and respect, by contemplating the limited remnant of the earliest patents; there any unwelcome sensations, arising from domestic affairs changed naturally into pity and contempt as he turned over the almost endless creations of the last century; and there, if every other leaf were powerless, he could read his own history with an interest which never failed.</p>`,
+  q:`Which choice best states the main idea of the text?`,
+  c:[`Sir Walter’s devotion to the Baronetage reflects his preoccupation with rank, and above all with his own family’s place within it.`,
+     `Sir Walter relies on the Baronetage chiefly as a refuge from the troubles of his household.`,
+     `Sir Walter respects families whose titles are ancient and looks down on those whose titles are recent.`,
+     `Sir Walter’s habit of rereading a single book shows a curiosity about history that the rest of his family lacks.`] },
+
+/* ---------- Câu 9 ---------- */
+{ type:'Command of Evidence (Textual)', domain:'ii', diff:'Easy',
+  passage:`<p>“Miniver Cheevy” is a poem by Edwin Arlington Robinson, collected in his 1910 book <em>The Town Down the River</em>. Its title character longs for the glories of earlier ages and despises his own. Robinson suggests, however, that Miniver’s contempt for the present is undermined by his own desires.</p>`,
+  q:`Which quotation from “Miniver Cheevy” most effectively illustrates the claim?`,
+  c:[`“Miniver loved the Medici, / Albeit he had never seen one;”`,
+     `“Miniver cursed the commonplace / And eyed a khaki suit with loathing;”`,
+     `“Miniver scorned the gold he sought, / But sore annoyed was he without it;”`,
+     `“Miniver coughed, and called it fate, / And kept on drinking.”`] },
+
+/* ---------- Câu 10 ---------- */
+{ type:'Command of Evidence (Textual)', domain:'ii', diff:'Hard',
+  passage:`<p>Neuroscientist Eleanor Maguire and colleagues found that licensed London taxi drivers—who must memorize the layout of some 25,000 streets to qualify—had larger posterior hippocampi, a brain region involved in spatial memory, than people who did not drive taxis. Two explanations are possible. Learning to navigate the city may enlarge this region, or people who already have a large posterior hippocampus may be especially likely to pursue, and succeed at, such a demanding job.</p>`,
+  q:`Which finding, if true, would most directly support the first explanation over the second?`,
+  c:[`Licensed taxi drivers had larger posterior hippocampi than London bus drivers, who spend comparable time driving but follow set routes.`,
+     `Trainees who later qualified as taxi drivers had posterior hippocampi of typical size when they began training but larger ones after they qualified.`,
+     `Among licensed taxi drivers, those with larger posterior hippocampi performed better on tests of London landmarks.`,
+     `People who scored highest on tests of spatial memory before training were the most likely to enroll in taxi-driver training.`] },
+
+/* ---------- Câu 11 ---------- */
+{ type:'Command of Evidence (Quantitative)', domain:'ii', diff:'Hard',
+  passage:`<div class="figure">
+<p class="tcaption">Cholera Deaths in London, First Seven Weeks of the 1854 Epidemic</p>
+<table class="dtable">
+<thead><tr><th>Water supply</th><th>Number of houses</th><th>Cholera deaths</th><th>Deaths per 10,000 houses</th></tr></thead>
+<tbody>
+<tr><td>Southwark and Vauxhall Company</td><td>40,046</td><td>1,263</td><td>315</td></tr>
+<tr><td>Lambeth Company</td><td>26,107</td><td>98</td><td>38</td></tr>
+<tr><td>Rest of London</td><td>256,423</td><td>1,422</td><td>55</td></tr>
+</tbody></table></div>
+<p>In 1854, physician John Snow investigated whether cholera spread through contaminated water. In parts of south London, two companies supplied water: the Southwark and Vauxhall Company drew its water from a stretch of the Thames polluted by sewage, while the Lambeth Company drew its water from farther upstream. The companies’ pipes ran down the same streets, and each served rich and poor households alike. Snow argued that comparing these two sets of households, which differed mainly in their water, revealed the effect of the water itself.</p>`,
+  q:`Which choice most effectively uses data from the table to support Snow’s argument?`,
+  c:[`Houses supplied by the Southwark and Vauxhall Company recorded 1,263 cholera deaths, whereas houses supplied by the Lambeth Company recorded only 98.`,
+     `Houses supplied by the Southwark and Vauxhall Company had 315 cholera deaths per 10,000 houses, compared with 55 per 10,000 houses in the rest of London.`,
+     `Houses supplied by the Southwark and Vauxhall Company had 315 cholera deaths per 10,000 houses, compared with 38 per 10,000 houses supplied by the Lambeth Company.`,
+     `The rest of London recorded 1,422 cholera deaths, more than the houses supplied by either company recorded.`] },
+
+/* ---------- Câu 12 ---------- */
+{ type:'Command of Evidence (Quantitative)', domain:'ii', diff:'Hard',
+  passage:`<div class="figure">
+<p class="tcaption">Graduate Admissions to Two UC Berkeley Departments, 1973</p>
+<table class="dtable">
+<thead><tr><th>Department</th><th>Men who applied</th><th>Men admitted (%)</th><th>Women who applied</th><th>Women admitted (%)</th></tr></thead>
+<tbody>
+<tr><td>A</td><td>825</td><td>62</td><td>108</td><td>82</td></tr>
+<tr><td>F</td><td>373</td><td>6</td><td>341</td><td>7</td></tr>
+<tr><td>A and F combined</td><td>1,198</td><td>about 45</td><td>449</td><td>about 25</td></tr>
+</tbody></table></div>
+<p>In 1973, the University of California, Berkeley, admitted 44 percent of the men but only 35 percent of the women who applied to its graduate programs. When statistician Peter Bickel and colleagues examined individual departments, however, they concluded that the overall figures were misleading. The table shows data for two of the departments they examined. A student argues that these two departments illustrate how a combined admission rate can favor men even when neither department, considered separately, does.</p>`,
+  q:`Which choice most effectively uses data from the table to support the student’s argument?`,
+  c:[`Department A admitted 82 percent of the women who applied but only 62 percent of the men who applied.`,
+     `More than three-quarters of the women applied to department F, which admitted 7 percent of them, whereas more than two-thirds of the men applied to department A, which admitted 62 percent of them.`,
+     `Each department admitted a higher percentage of women than of men: 82 versus 62 percent in department A and 7 versus 6 percent in department F.`,
+     `Each department admitted a higher percentage of women than of men (82 versus 62 percent and 7 versus 6 percent), yet the two departments combined admitted about 45 percent of the men but only about 25 percent of the women.`] },
+
+/* ---------- Câu 13 ---------- */
+{ type:'Inferences', domain:'ii', diff:'Easy',
+  passage:`<p>For generations, guides at Pompeii told visitors stories about the people whose bodies were preserved as plaster casts after the eruption of Mount Vesuvius in 79 CE: an adult wearing a gold bracelet and holding a child was described as a mother with her son, and two figures found embracing were said to be sisters, or a mother and daughter. In 2024, a team including David Caramelli and David Reich analyzed DNA from bones inside the casts. The adult with the bracelet turned out to be a man unrelated to the child, and at least one of the embracing pair was male. These results suggest that the traditional identifications ${B}</p>`,
+  q:`Which choice most logically completes the text?`,
+  c:[`rested on assumptions about jewelry, closeness, and family that the remains themselves did not support.`,
+     `were invented by guides who knew that the casts did not depict members of the same family.`,
+     `were mistaken because none of the people preserved in the casts were related to one another.`,
+     `show that in Pompeii gold jewelry was worn more often by men than by women.`] },
+
+/* ---------- Câu 14 ---------- */
+{ type:'Inferences', domain:'ii', diff:'Hard',
+  passage:`<p>Russian has two basic color words for shades that English speakers call blue: <em>goluboy</em> for lighter blues and <em>siniy</em> for darker ones. Jonathan Winawer and colleagues showed Russian and English speakers three blue squares and asked which of the bottom two matched the top one. Russian speakers answered faster when the bottom squares fell on opposite sides of the <em>goluboy</em>–<em>siniy</em> boundary than when both fell on the same side; English speakers showed no such advantage. When Russian speakers had to silently rehearse a string of digits during the task, however, their advantage disappeared, whereas memorizing a spatial pattern left it intact. These results suggest that ${B}</p>`,
+  q:`Which choice most logically completes the text?`,
+  c:[`Russian speakers perceive light and dark blue as more different than English speakers do, regardless of what else they are doing at the time.`,
+     `the Russian speakers’ advantage depended on their language being actively engaged during the task rather than on a lasting difference in how they see color.`,
+     `English speakers would show the same advantage if they learned separate words for light and dark blue.`,
+     `the spatial memory task was too easy to interfere with the Russian speakers’ judgments.`] },
+
+/* ---------- Câu 15 ---------- */
+{ type:'Inferences', domain:'ii', diff:'Hard',
+  passage:`<p>While working with flight instructors in the Israeli Air Force, psychologist Daniel Kahneman heard one instructor argue that criticism works better than praise: cadets he praised after an unusually smooth maneuver usually did worse on their next attempt, whereas cadets he scolded after an unusually poor one usually improved. Kahneman agreed that the pattern was real but disputed its cause. Because a cadet’s performance on any single attempt depends partly on chance, he reasoned, the instructor’s observations ${B}</p>`,
+  q:`Which choice most logically completes the text?`,
+  c:[`show that praise tends to make cadets overconfident, whereas criticism makes them more careful.`,
+     `suggest that the cadets’ skill varied too much from one attempt to the next for any kind of feedback to be useful.`,
+     `indicate that the instructor praised and criticized cadets according to chance rather than according to their actual performance.`,
+     `would be expected even if the feedback had no effect at all, since an unusually good or poor attempt is likely to be followed by a more typical one.`] },
+
+/* ---------- Câu 16 ---------- */
+{ type:'Boundaries', domain:'sec', diff:'Medium',
+  passage:`<p>Written in the 1940s but not published until 1988, the novel <em>Waterlily</em> by Yankton Dakota ${B} follows two generations of Dakota women in the decades before American settlers spread across the Great Plains.</p>`,
+  q:`Which choice completes the text so that it conforms to the conventions of Standard English?`,
+  c:[`ethnographer Ella Cara Deloria`,`ethnographer, Ella Cara Deloria,`,`ethnographer, Ella Cara Deloria`,`ethnographer Ella Cara Deloria,`] },
+
+/* ---------- Câu 17 ---------- */
+{ type:'Boundaries', domain:'sec', diff:'Medium',
+  passage:`<p>In her 1925 doctoral thesis, Cecilia Payne concluded that stars consist mainly of hydrogen and helium—elements that most astronomers of the day, who believed stars to be made largely of metals like those found on Earth, regarded as minor ${B} after Henry Norris Russell, a member of her thesis committee, disputed the finding, she added a sentence calling it “almost certainly not real.”</p>`,
+  q:`Which choice completes the text so that it conforms to the conventions of Standard English?`,
+  c:[`ingredients, but`,`ingredients but`,`ingredients—but`,`ingredients; but`] },
+
+/* ---------- Câu 18 ---------- */
+{ type:'Form, Structure, and Sense', domain:'sec', diff:'Medium',
+  passage:`<p>Benjamin Banneker’s 1791 letter to Thomas Jefferson, which challenged Jefferson’s views about the intellectual abilities of Black people, along with Jefferson’s reply, ${B} published by a Philadelphia printer the following year.</p>`,
+  q:`Which choice completes the text so that it conforms to the conventions of Standard English?`,
+  c:[`were`,`was`,`have been`,`are`] },
+
+/* ---------- Câu 19 ---------- */
+{ type:'Form, Structure, and Sense', domain:'sec', diff:'Medium',
+  passage:`<p>In a double-blind test, most of 21 professional violinists could not tell old Italian violins, including two made by Antonio Stradivari, from new ones, a result ${B} the long-standing belief that the old instruments are superior.</p>`,
+  q:`Which choice completes the text so that it conforms to the conventions of Standard English?`,
+  c:[`challenging`,`challenges`,`that challenge`,`to have challenged`] },
+
+/* ---------- Câu 20 ---------- */
+{ type:'Boundaries', domain:'sec', diff:'Medium',
+  passage:`<p>The 2017 Nobel Prize in Physics went to three scientists behind LIGO, the observatory that first detected gravitational waves: Rainer Weiss of MIT, who designed its laser-based ${B} Barry Barish of Caltech, who brought the project to completion; and Kip Thorne, a theoretical physicist also at Caltech.</p>`,
+  q:`Which choice completes the text so that it conforms to the conventions of Standard English?`,
+  c:[`detector,`,`detector;`,`detector:`,`detector`] },
+
+/* ---------- Câu 21 ---------- */
+{ type:'Boundaries', domain:'sec', diff:'Medium',
+  passage:`<p>In the eighteenth century, the German scholar Johann Joachim Winckelmann celebrated the gleaming white marble of ancient Greek statues as an ideal of beauty. The statues had not always been ${B} them under ultraviolet light, archaeologists have detected traces of paint showing that many were once brightly colored.</p>`,
+  q:`Which choice completes the text so that it conforms to the conventions of Standard English?`,
+  c:[`white, however. Examining`,`white; however. Examining`,`white, however, examining`,`white however, examining`] },
+
+/* ---------- Câu 22 ---------- */
+{ type:'Transitions', domain:'eoi', diff:'Medium',
+  passage:`<p>When Mary Anning uncovered a remarkably complete plesiosaur skeleton in 1823, the French anatomist Georges Cuvier suspected that it was a fake. After the British geologists William Conybeare and William Buckland vouched for the specimen, however, Cuvier was persuaded that it was genuine. ${B} he sent the geologist Constant Prévost to Britain to acquire a plesiosaur for the natural history museum in Paris.</p>`,
+  q:`Which choice completes the text with the most logical transition?`,
+  c:[`Nevertheless,`,`Indeed,`,`Instead,`,`Likewise,`] },
+
+/* ---------- Câu 23 ---------- */
+{ type:'Transitions', domain:'eoi', diff:'Medium',
+  passage:`<p>Years before he turned to invention, the composer George Antheil wrote <em>Ballet Mécanique</em>, a work scored for sixteen synchronized player pianos. ${B} the torpedo-guidance system that he and the actress Hedy Lamarr patented in 1942 used punched paper rolls like a player piano’s to switch radio signals among 88 frequencies—the number of keys on a piano.</p>`,
+  q:`Which choice completes the text with the most logical transition?`,
+  c:[`In contrast,`,`For example,`,`Fittingly,`,`Nevertheless,`] },
+
+/* ---------- Câu 24 ---------- */
+{ type:'Rhetorical Synthesis', domain:'eoi', diff:'Easy',
+  passage:`<p>While researching a topic, a student has taken the following notes:</p>
+<ul class="notes">
+<li>Before 2022, a REM-like sleep state had been reported in vertebrates, such as birds and mammals, and in cephalopods, such as cuttlefish and octopuses.</li>
+<li>Daniela Rößler studied young jumping spiders (<em>Evarcha arcuata</em>) at night.</li>
+<li>For their first ten days of life, the spiderlings lack pigment over their heads, so their retinas can be seen through the exoskeleton.</li>
+<li>During the night, the spiderlings’ retinas moved rapidly in bouts about every 20 minutes, while their legs curled and uncurled.</li>
+<li>Rößler’s 2022 study was the first report of a REM-like state in an arachnid.</li>
+<li>Whether the spiders dream remains unknown.</li>
+</ul>`,
+  q:`The student wants to emphasize how Rößler’s finding extended the range of animals in which a REM-like sleep state has been reported. Which choice most effectively uses relevant information from the notes to accomplish this goal?`,
+  c:[`Rößler observed that young jumping spiders moved their retinas rapidly in regular bouts at night while curling and uncurling their legs, though whether the spiders dream remains unknown.`,
+     `Because young jumping spiders lack pigment over their heads, Rößler was able to watch their retinas moving in bouts about every 20 minutes during the night.`,
+     `Rößler’s observations of young jumping spiders provided the first report of a REM-like sleep state in an arachnid, adding arachnids to the vertebrates and cephalopods in which such a state had already been reported.`,
+     `Before Rößler’s study, a REM-like sleep state had been reported in vertebrates, such as birds and mammals, and in cephalopods, such as cuttlefish and octopuses.`] },
+
+/* ---------- Câu 25 ---------- */
+{ type:'Rhetorical Synthesis', domain:'eoi', diff:'Medium',
+  passage:`<p>While researching a topic, a student has taken the following notes:</p>
+<ul class="notes">
+<li>Laboratory-made mRNA triggered inflammation in the body because immune cells recognized it as foreign.</li>
+<li>This reaction was a major obstacle to using mRNA in medicine.</li>
+<li>Biochemist Katalin Karikó and immunologist Drew Weissman noticed that mRNA from mammalian cells contains chemically modified bases, whereas laboratory-made mRNA did not.</li>
+<li>In 2005, they reported that adding such modified bases to laboratory-made mRNA almost eliminated the inflammatory response.</li>
+<li>Later studies showed that the modified mRNA also produced more protein.</li>
+<li>Their work made possible the mRNA vaccines used against COVID-19, and they shared the 2023 Nobel Prize in Physiology or Medicine.</li>
+</ul>`,
+  q:`The student wants to explain how an observation about natural mRNA led to Karikó and Weissman’s solution to a problem. Which choice most effectively uses relevant information from the notes to accomplish this goal?`,
+  c:[`Noticing that mRNA from mammalian cells contains modified bases that laboratory-made mRNA lacked, Karikó and Weissman added such bases to laboratory-made mRNA, almost eliminating the inflammation it had triggered.`,
+     `Laboratory-made mRNA triggered inflammation, a major obstacle to its medical use, until Karikó and Weissman reported in 2005 that adding modified bases almost eliminated the response.`,
+     `Karikó and Weissman noticed that mRNA from mammalian cells contains modified bases, and later studies showed that modified mRNA produces more protein than unmodified mRNA does.`,
+     `Because immune cells recognized laboratory-made mRNA as foreign, it triggered inflammation, an obstacle that Karikó and Weissman, whose work led to vaccines against COVID-19, eventually overcame.`] },
+
+/* ---------- Câu 26 ---------- */
+{ type:'Rhetorical Synthesis', domain:'eoi', diff:'Medium',
+  passage:`<p>While researching a topic, a student has taken the following notes:</p>
+<ul class="notes">
+<li>Matsuo Bashō was a seventeenth-century Japanese poet.</li>
+<li>In 1689, he and his companion Kawai Sora set out from Edo (now Tokyo) on a journey into Japan’s northern interior.</li>
+<li>They traveled about 2,400 kilometers, mostly on foot, over some 156 days.</li>
+<li>Bashō’s account of the journey, <em>Oku no Hosomichi</em> (<em>The Narrow Road to the Deep North</em>), was published in 1702, after his death.</li>
+<li>The work is an example of haibun.</li>
+<li>Haibun is a literary form that combines prose with haiku, which are brief poems.</li>
+</ul>`,
+  q:`The student wants to introduce <em>Oku no Hosomichi</em> to an audience unfamiliar with haibun, emphasizing the work’s form. Which choice most effectively uses relevant information from the notes to accomplish this goal?`,
+  c:[`Bashō’s <em>Oku no Hosomichi</em>, published in 1702, is an example of haibun and recounts a journey of about 2,400 kilometers.`,
+     `Haibun is a literary form that combines prose with haiku, which are brief poems; in 1689, Bashō and Kawai Sora set out from Edo on a long journey.`,
+     `In 1689, Bashō and his companion Kawai Sora set out from Edo on a journey of about 2,400 kilometers, which Bashō later recounted in <em>Oku no Hosomichi</em>.`,
+     `Bashō’s <em>Oku no Hosomichi</em>, an account of a roughly 2,400-kilometer journey through Japan’s northern interior, combines passages of prose with haiku, brief poems—a form known as haibun.`] },
+
+/* ---------- Câu 27 ---------- */
+{ type:'Rhetorical Synthesis', domain:'eoi', diff:'Hard',
+  passage:`<p>While researching a topic, a student has taken the following notes:</p>
+<ul class="notes">
+<li>Earthquakes send two main kinds of waves through Earth’s interior: P waves and S waves.</li>
+<li>S waves cannot travel through liquid.</li>
+<li>In 1926, geophysicist Harold Jeffreys noted that S waves never reached the side of Earth opposite an earthquake, and he concluded that Earth’s core is liquid.</li>
+<li>Jeffreys’s model also predicted “shadow zones,” regions where P waves from a given earthquake should not arrive.</li>
+<li>Studying records of a 1929 earthquake in New Zealand, seismologist Inge Lehmann noticed faint P waves arriving inside a shadow zone.</li>
+<li>In 1936, she proposed that the liquid core surrounds a smaller, solid inner core.</li>
+<li>Jeffreys accepted Lehmann’s model in 1939.</li>
+</ul>`,
+  q:`The student wants to emphasize a similarity in how Jeffreys and Lehmann reached their conclusions. Which choice most effectively uses relevant information from the notes to accomplish this goal?`,
+  c:[`Both Jeffreys and Lehmann concluded that at least part of Earth’s core is liquid.`,
+     `Jeffreys and Lehmann both studied Earth’s core, and in 1939 Jeffreys accepted the model that Lehmann had proposed.`,
+     `Jeffreys drew his conclusion from S waves that never reached the far side of Earth, while Lehmann drew hers from P waves that arrived where none were expected.`,
+     `Both Jeffreys and Lehmann drew conclusions about Earth’s core from where earthquake waves did or did not arrive.`] }
+];
+
+</script>
+<script>
+const _K="RGQBJUFmAiE8XH4YOlh9GTRUdBYyUHITLkpp",_T="RWcEJkJjAyM7X38fOFt4GjZXdhUwU3MULU9s";
+function _d(s){const r=atob(s);let o='';for(let i=0;i<r.length;i++)o+=String.fromCharCode(r.charCodeAt(i)^((i*31+7)&127));return o;}
+</script>
+<script>
+(function(){
+'use strict';
+/* ---------------- helpers ---------------- */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const N = QUESTIONS.length;
+const DUR = CONFIG.DURATION_MIN * 60 * 1000;
+const L = ['A','B','C','D'];
+const KEY = _d(_K).split('').map(c => L.indexOf(c));
+const TRAP = _d(_T).split('').map(c => L.indexOf(c));
+const DOMAINS = { cs:'Craft and Structure', ii:'Information and Ideas', sec:'Standard English Conventions', eoi:'Expression of Ideas' };
+const DOMAIN_SHORT = { cs:'Craft & Structure', ii:'Information & Ideas', sec:'Conventions', eoi:'Expression of Ideas' };
+const DIFFS = ['Easy','Medium','Hard'];
+const SALT = 'llst|' + CONFIG.TEST_ID;
+const LSK = { session:'llst_'+CONFIG.TEST_ID+'_session', history:'llst_'+CONFIG.TEST_ID+'_history', pending:'llst_'+CONFIG.TEST_ID+'_pending' };
+const MEM = {};
+function load(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : (k in MEM ? MEM[k] : d); } catch(e){ return k in MEM ? MEM[k] : d; } }
+function save(k, v){ MEM[k] = v; try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+function del(k){ delete MEM[k]; try { localStorage.removeItem(k); } catch(e){} }
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const mmss = ms => { const t = Math.max(0, Math.round(ms/1000)); return pad(Math.floor(t/60)) + ':' + pad(t%60); };
+const durVN = ms => { const t = Math.max(0, Math.round(ms/1000)), m = Math.floor(t/60), s = t % 60; return m ? m + ' phút' + (s ? ' ' + s + ' giây' : '') : s + ' giây'; };
+const dtVN = ts => { const d = new Date(ts); return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes()); };
+function cyrb53(str, seed = 0){ let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed; for (let i = 0, ch; i < str.length; i++){ ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); } h1 = Math.imul(h1 ^ (h1>>>16), 2246822507); h1 ^= Math.imul(h2 ^ (h2>>>13), 3266489909); h2 = Math.imul(h2 ^ (h2>>>16), 2246822507); h2 ^= Math.imul(h1 ^ (h1>>>13), 3266489909); return (4294967296 * (2097151 & h2) + (h1>>>0)).toString(16).padStart(14,'0'); }
+const b64e = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const b64d = s => { s = s.replace(/-/g,'+').replace(/_/g,'/'); while (s.length % 4) s += '='; return decodeURIComponent(escape(atob(s))); };
+function show(id){ ['intake','test','result'].forEach(x => $('#'+x).classList.toggle('hidden', x !== id)); }
+function toast(msg, ms = 2600){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms); }
+function modal(html, buttons){ // buttons: [{text, cls, onClick}]
+  const ov = document.createElement('div'); ov.className = 'overlay';
+  ov.innerHTML = '<div class="modal">' + html + '<div class="row"></div></div>';
+  const row = $('.row', ov);
+  (buttons || [{text:'OK'}]).forEach(b => { const el = document.createElement('button'); el.className = 'btn sm ' + (b.cls || ''); el.textContent = b.text; el.onclick = () => { if (b.keep !== true) ov.remove(); b.onClick && b.onClick(ov); }; row.appendChild(el); });
+  document.body.appendChild(ov); return ov;
+}
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; } catch(e){}
+  try { const ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); return ok; } catch(e){ return false; }
+}
+const ICON_PIN = '<svg class="pin" viewBox="0 0 14 16"><path d="M7 0C3.7 0 1 2.6 1 5.9 1 10.3 7 16 7 16s6-5.7 6-10.1C13 2.6 10.3 0 7 0z" fill="#1e1e1e"/><circle cx="7" cy="6" r="2.3" fill="#fff"/></svg>';
+const ICON_FLAG = '<svg class="flag" viewBox="0 0 11 15"><path d="M0 0h11v15L5.5 11 0 15z" fill="#c8102e"/></svg>';
+
+/* ---------------- state ---------------- */
+let S = load(LSK.session, null);
+let tickTimer = null, lastTick = 0, lastSave = 0;
+
+function newSession(name, age){
+  return { v:1, id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7), testId: CONFIG.TEST_ID,
+    name, age, startedAt: Date.now(), answers: Array(N).fill(null), crossed: Array.from({length:N}, () => [false,false,false,false]),
+    marked: Array(N).fill(false), hl: {}, tsp: Array(N).fill(0), cur: 0, view: 'q', abc: false, vio: [], away: null, lastSeen: Date.now(), warned: false, timerHidden: false, status: 'active' };
+}
+const persist = () => { if (S){ if (S.status === 'active') S.lastSeen = Date.now(); save(LSK.session, S); } };
+const remaining = () => S.startedAt + DUR - Date.now();
+
+function toRecord(s){
+  return { v:1, id:s.id, t:s.testId, n:s.name, a:s.age, s:s.startedAt, e:s.endedAt, auto:s.auto ? 1 : 0, fv:s.forced ? 1 : 0, lv:(s.vio || []).length, vt:Math.round((s.vio || []).reduce((a, v) => a + v.d, 0) / 1000), vio:(s.vio || []).map(v => [Math.round((v.t - s.startedAt) / 1000), Math.round(v.d / 1000), v.k]),
+    ans: s.answers.map(x => x == null ? '-' : L[x]).join(''), mk: s.marked.map(x => x ? 1 : 0).join(''), tq: s.tsp.map(x => Math.round(x/1000)) };
+}
+function grade(rec){
+  const ans = rec.ans.split('').map(c => L.indexOf(c));
+  const per = QUESTIONS.map((q, i) => { const a = ans[i] == null ? -1 : ans[i];
+    return { i, q, a, k: KEY[i], ok: a === -1 ? null : a === KEY[i], trap: a !== -1 && a !== KEY[i] && a === TRAP[i], mk: !!rec.mk && rec.mk[i] === '1', t: rec.tq ? rec.tq[i] || 0 : 0 }; });
+  const correct = per.filter(p => p.ok === true).length, blank = per.filter(p => p.ok === null).length;
+  const dom = {}; Object.keys(DOMAINS).forEach(k => dom[k] = [0,0]);
+  const dif = {}; DIFFS.forEach(k => dif[k] = [0,0]);
+  per.forEach(p => { dom[p.q.domain][1]++; dif[p.q.diff][1]++; if (p.ok) { dom[p.q.domain][0]++; dif[p.q.diff][0]++; } });
+  return { per, correct, blank, wrong: N - correct - blank, dom, dif, traps: per.filter(p => p.trap).length,
+    wrongList: per.filter(p => p.ok === false).map(p => p.i + 1), blankList: per.filter(p => p.ok === null).map(p => p.i + 1),
+    dur: Math.min(DUR, Math.max(0, (rec.e || Date.now()) - rec.s)) };
+}
+function encodeRec(rec){ const j = JSON.stringify(rec); return 'LLST1.' + b64e(j) + '.' + cyrb53(j + SALT).slice(0,8); }
+function decodeCode(text){
+  const m = String(text).replace(/\s+/g,'').match(/LLST1\.([A-Za-z0-9_-]+)\.([0-9a-f]{8})/);
+  if (!m) throw new Error('Không tìm thấy mã kết quả (mã bắt đầu bằng LLST1.)');
+  const j = b64d(m[1]); const rec = JSON.parse(j);
+  return { rec, valid: cyrb53(j + SALT).slice(0,8) === m[2] };
+}
+
+/* ---- dòng dữ liệu cho Google Sheet / CSV ---- */
+const domN = k => QUESTIONS.filter(q => q.domain === k).length;
+const difN = k => QUESTIONS.filter(q => q.diff === k).length;
+const HEADERS = ['Nộp lúc','Họ tên','Tuổi','Đúng','Sai','Bỏ trống','Thời gian làm','Cách nộp','Rời bài (lần)','Tổng thời gian rời bài']
+  .concat(Object.keys(DOMAINS).map(k => DOMAIN_SHORT[k] + ' (/' + domN(k) + ')'))
+  .concat(DIFFS.map(k => k + ' (/' + difN(k) + ')'))
+  .concat(['Dính bẫy','Câu sai','Câu bỏ trống'])
+  .concat(QUESTIONS.map((q, i) => 'Q' + (i+1)))
+  .concat(['Mã bài']);
+const Q_START_COL = HEADERS.indexOf('Q1') + 1;
+const howSubmitted = r => r.fv ? 'Tự nộp do vi phạm' : r.auto ? 'Hết giờ' : 'Học viên nộp';
+const safeCell = s => { s = String(s == null ? '' : s); return /^[=+\-@]/.test(s) ? "'" + s : s; };
+function buildRow(rec, g){
+  return [dtVN(rec.e), safeCell(rec.n), rec.a, g.correct, g.wrong, g.blank, durVN(g.dur), howSubmitted(rec), rec.lv || 0, durVN((rec.vt || 0) * 1000)]
+    .concat(Object.keys(DOMAINS).map(k => g.dom[k][0]))
+    .concat(DIFFS.map(k => g.dif[k][0]))
+    .concat([g.traps, g.wrongList.join('; '), g.blankList.join('; ')])
+    .concat(g.per.map(p => p.a === -1 ? '' : L[p.a]))
+    .concat([rec.id]);
+}
+function sheetPayload(rec){
+  const g = grade(rec);
+  return { id: rec.id, submittedAt: new Date(rec.e).toISOString(), headers: HEADERS, row: buildRow(rec, g), qStartCol: Q_START_COL, qOk: g.per.map(p => p.ok === null ? -1 : p.ok ? 1 : 0) };
+}
+
+/* ---------------- gửi Google Sheet ---------------- */
+let sendState = 'idle'; // idle | sending | sent | fail | off
+async function flushPending(){
+  let pend = load(LSK.pending, []);
+  if (!CONFIG.SHEET_URL){ sendState = 'off'; renderSendStatus(); return; }
+  if (!pend.length){ renderSendStatus(); return; }
+  sendState = 'sending'; renderSendStatus();
+  let anyFail = false;
+  for (const rec of pend.slice()){
+    const body = JSON.stringify(sheetPayload(rec));
+    let ok = false;
+    try {
+      const res = await fetch(CONFIG.SHEET_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body });
+      const j = await res.json(); ok = !!j.ok;
+    } catch(e){
+      try { await fetch(CONFIG.SHEET_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body }); ok = true; } catch(e2){ ok = false; }
+    }
+    if (ok){
+      save(LSK.pending, load(LSK.pending, []).filter(x => x.id !== rec.id));
+      const h = load(LSK.history, []); const it = h.find(x => x.id === rec.id); if (it){ it.sent = Date.now(); save(LSK.history, h); }
+    } else anyFail = true;
+  }
+  sendState = anyFail ? 'fail' : 'sent';
+  renderSendStatus();
+}
+window.addEventListener('online', flushPending);
+
+/* ---------------- intake ---------------- */
+$('#intakeForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#fName').value.trim().replace(/\s+/g,' ');
+  const age = parseInt($('#fAge').value, 10);
+  const err = $('#fErr');
+  if (name.length < 2){ err.textContent = 'Vui lòng nhập họ và tên.'; $('#fName').focus(); return; }
+  if (!age || age < 8 || age > 80){ err.textContent = 'Vui lòng nhập tuổi hợp lệ.'; $('#fAge').focus(); return; }
+  err.textContent = '';
+  modal('<h3>Bắt đầu làm bài?</h3><p>Học viên: <b>' + esc(name) + '</b> — ' + age + ' tuổi.</p><p>Đồng hồ 32 phút sẽ bắt đầu chạy ngay và không tạm dừng được.</p>',
+    [{ text:'Quay lại', cls:'ghost' }, { text:'Bắt đầu', onClick: () => { reqFS(); keepAwake(); S = newSession(name, age); persist(); enterTest(); } }]);
+});
+
+/* ---------------- test UI ---------------- */
+const passageEl = $('#passage'), stemEl = $('#stem'), choicesEl = $('#choices');
+$('#secLabel').textContent = CONFIG.SECTION_LABEL;
+if (CONFIG.STRICT_MODE){ $('#strictRule').innerHTML = '<b>Chế độ thi nghiêm:</b> bài mở toàn màn hình; chuyển tab, mở ứng dụng/cửa sổ khác hay thoát toàn màn hình đều bị ghi lại và báo giáo viên' + (CONFIG.MAX_VIOLATIONS > 0 ? '. Rời bài <b>' + CONFIG.MAX_VIOLATIONS + ' lần</b> → bài tự động nộp.' : '.'); $('#strictRule2').classList.remove('hidden'); } else { $('#strictRule').textContent = 'Không chuyển sang tab khác trong lúc làm bài.'; }
+$('#revTitle').textContent = $('#qnavTitle').textContent = CONFIG.SECTION_LABEL + ' Questions';
+
+function enterTest(){
+  show('test');
+  $('#who').textContent = S.name;
+  $('#split').style.setProperty('--left', S.split || '50%');
+  setTimerHidden(S.timerHidden);
+  lastTick = Date.now();
+  if (S.view === 'review') showReview(); else go(S.cur, true);
+  clearInterval(tickTimer); tickTimer = setInterval(tick, 250); tick();
+}
+function tick(){
+  if (!S || S.status !== 'active') return;
+  const now = Date.now();
+  if (S.view === 'q' && !document.hidden && !S.away) S.tsp[S.cur] += Math.min(now - lastTick, 2000);
+  lastTick = now;
+  const rem = remaining();
+  $('#timerText').textContent = mmss(Math.ceil(rem/1000)*1000);
+  if (rem <= 5*60*1000){
+    $('#timer').classList.add('warn');
+    if (!S.warned){ S.warned = true; setTimerHidden(false); toast('Còn 5 phút!', 4000); persist(); }
+  }
+  if (rem <= 0){ finish(true); return; }
+  if (now - lastSave > 2000){ lastSave = now; persist(); }
+}
+function setTimerHidden(h){
+  S.timerHidden = !!h; $('#timer').classList.toggle('hide', S.timerHidden);
+  $('#hideBtn').textContent = S.timerHidden ? 'Show' : 'Hide';
+}
+$('#hideBtn').onclick = () => { if (S.warned && !S.timerHidden){ toast('Không thể ẩn đồng hồ trong 5 phút cuối'); return; } setTimerHidden(!S.timerHidden); persist(); };
+
+function go(i, initial){
+  closeNav(); hideHlPop();
+  S.cur = Math.max(0, Math.min(N-1, i)); S.view = 'q';
+  $('#split').classList.remove('hidden'); $('#review').classList.add('hidden');
+  renderQ(); persist();
+  if (!initial){ $('#paneL').scrollTop = 0; $('#paneR').scrollTop = 0; $('#split').scrollTop = 0; }
+}
+function renderQ(){
+  const i = S.cur, q = QUESTIONS[i];
+  passageEl.innerHTML = S.hl[i] || q.passage;
+  $('#qnum').textContent = i + 1;
+  $('#markBtn').classList.toggle('on', S.marked[i]);
+  $('#abcBtn').classList.toggle('on', S.abc);
+  choicesEl.classList.toggle('abc-on', S.abc);
+  stemEl.innerHTML = q.q;
+  choicesEl.innerHTML = q.c.map((t, j) => {
+    const sel = S.answers[i] === j, x = S.crossed[i][j];
+    return '<div class="crow"><button class="choice' + (sel ? ' sel' : '') + (x ? ' x' : '') + '" data-j="' + j + '" aria-pressed="' + sel + '"><span class="ltr">' + L[j] + '</span><span class="ct">' + t + '</span></button>' +
+      '<button class="elim' + (x ? ' undo' : '') + '" data-e="' + j + '" title="Cross out ' + L[j] + '">' + (x ? 'Undo' : '<span class="el">' + L[j] + '</span>') + '</button></div>';
+  }).join('');
+  $('#qBtnText').textContent = 'Question ' + (i+1) + ' of ' + N;
+  $('#qBtn').classList.remove('hidden');
+  $('#backBtn').style.visibility = i === 0 ? 'hidden' : 'visible';
+  $('#nextBtn').textContent = 'Next';
+}
+choicesEl.addEventListener('click', e => {
+  const i = S.cur;
+  const c = e.target.closest('.choice'), el = e.target.closest('.elim');
+  if (c){ const j = +c.dataset.j; S.crossed[i][j] = false; S.answers[i] = j; }
+  else if (el){ const j = +el.dataset.e; S.crossed[i][j] = !S.crossed[i][j]; if (S.crossed[i][j] && S.answers[i] === j) S.answers[i] = null; }
+  else return;
+  renderQ(); persist();
+});
+$('#markBtn').onclick = () => { S.marked[S.cur] = !S.marked[S.cur]; renderQ(); persist(); };
+$('#abcBtn').onclick = () => { S.abc = !S.abc; renderQ(); persist(); };
+$('#backBtn').onclick = () => { if (S.view === 'review') go(N-1); else go(S.cur - 1); };
+$('#nextBtn').onclick = () => { if (S.view === 'review') confirmSubmit(); else if (S.cur === N-1) showReview(); else go(S.cur + 1); };
+
+/* navigator */
+function gridHTML(withPin){
+  return QUESTIONS.map((q, i) => '<button class="gcell' + (S.answers[i] != null ? ' ans' : '') + '" data-g="' + i + '">' + (i+1) +
+    (S.marked[i] ? ICON_FLAG : '') + (withPin && S.view === 'q' && S.cur === i ? ICON_PIN : '') + '</button>').join('');
+}
+function openNav(){ $('#qnavGrid').innerHTML = gridHTML(true); $('#qnav').classList.remove('hidden'); $('#qBtn').classList.add('open'); }
+function closeNav(){ $('#qnav').classList.add('hidden'); $('#qBtn').classList.remove('open'); }
+$('#qBtn').onclick = () => $('#qnav').classList.contains('hidden') ? openNav() : closeNav();
+$('#qnavClose').onclick = closeNav;
+$('#qnavGrid').onclick = e => { const b = e.target.closest('.gcell'); if (b) go(+b.dataset.g); };
+$('#revGrid').onclick = e => { const b = e.target.closest('.gcell'); if (b) go(+b.dataset.g); };
+$('#gotoReview').onclick = () => { closeNav(); showReview(); };
+document.addEventListener('mousedown', e => { if (!$('#qnav').classList.contains('hidden') && !e.target.closest('#qnav') && !e.target.closest('#qBtn')) closeNav(); });
+
+function showReview(){
+  closeNav(); hideHlPop(); S.view = 'review';
+  $('#split').classList.add('hidden'); $('#review').classList.remove('hidden');
+  $('#revGrid').innerHTML = gridHTML(false);
+  $('#qBtn').classList.add('hidden');
+  $('#backBtn').style.visibility = 'visible';
+  $('#nextBtn').textContent = 'Submit';
+  persist();
+}
+function confirmSubmit(){
+  const un = S.answers.filter(a => a == null).length, mk = S.marked.filter(Boolean).length;
+  modal('<h3>Nộp bài?</h3>' + (un ? '<p>Bạn còn <b>' + un + ' câu chưa chọn đáp án</b>.</p>' : '<p>Bạn đã trả lời đủ ' + N + ' câu.</p>') +
+    (mk ? '<p>Có ' + mk + ' câu đang đánh dấu Mark for Review.</p>' : '') + '<p>Sau khi nộp sẽ không sửa được bài nữa.</p>',
+    [{ text:'Quay lại', cls:'ghost' }, { text:'Nộp bài', onClick: () => finish(false) }]);
+}
+
+/* directions */
+$('#dirBtn').onclick = () => $('#dirPanel').classList.toggle('hidden');
+$('#dirClose').onclick = () => $('#dirPanel').classList.add('hidden');
+
+/* split divider */
+(function(){
+  const dv = $('#divider'), sp = $('#split'); let drag = false;
+  dv.addEventListener('pointerdown', e => { drag = true; dv.setPointerCapture(e.pointerId); e.preventDefault(); });
+  dv.addEventListener('pointermove', e => { if (!drag) return; const r = sp.getBoundingClientRect(); const p = Math.max(25, Math.min(75, (e.clientX - r.left) / r.width * 100)); sp.style.setProperty('--left', p.toFixed(1) + '%'); });
+  const end = () => { if (drag){ drag = false; S.split = sp.style.getPropertyValue('--left'); persist(); } };
+  dv.addEventListener('pointerup', end); dv.addEventListener('pointercancel', end);
+})();
+
+/* highlight */
+const hlpop = $('#hlpop');
+function selInPassage(){
+  const sel = window.getSelection();
+  if (!sel || !sel.rangeCount || sel.isCollapsed) return null;
+  const r = sel.getRangeAt(0);
+  if (!passageEl.contains(r.commonAncestorContainer)) return null;
+  return r;
+}
+function hideHlPop(){ hlpop.classList.add('hidden'); }
+function maybeShowHlPop(){
+  setTimeout(() => {
+    const r = selInPassage(); if (!r){ hideHlPop(); return; }
+    const rect = r.getBoundingClientRect();
+    hlpop.classList.remove('hidden');
+    const w = hlpop.offsetWidth;
+    hlpop.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, rect.left + rect.width/2 - w/2)) + 'px';
+    hlpop.style.top = Math.max(8, rect.top - 46) + 'px';
+  }, 10);
+}
+function applyHighlight(){
+  const r = selInPassage(); if (!r) return false;
+  const walker = document.createTreeWalker(passageEl, NodeFilter.SHOW_TEXT);
+  const parts = [];
+  while (walker.nextNode()){
+    const n = walker.currentNode;
+    if (!r.intersectsNode(n) || !n.nodeValue.trim()) continue;
+    if (n.parentElement.closest('mark.hl') || n.parentElement.closest('.blank')) continue;
+    const s = n === r.startContainer ? r.startOffset : 0;
+    const e = n === r.endContainer ? r.endOffset : n.nodeValue.length;
+    if (e > s) parts.push([n, s, e]);
+  }
+  parts.forEach(([n, s, e]) => {
+    const mid = n.splitText(s); mid.splitText(e - s);
+    if (!mid.nodeValue.trim()) return;
+    const m = document.createElement('mark'); m.className = 'hl';
+    mid.parentNode.insertBefore(m, mid); m.appendChild(mid);
+  });
+  window.getSelection().removeAllRanges();
+  S.hl[S.cur] = passageEl.innerHTML; persist(); hideHlPop();
+  return parts.length > 0;
+}
+['mouseup','keyup','touchend'].forEach(ev => passageEl.addEventListener(ev, maybeShowHlPop));
+let selT = null;
+document.addEventListener('selectionchange', () => { if (!S || S.status !== 'active' || S.view !== 'q') return; clearTimeout(selT); selT = setTimeout(maybeShowHlPop, 300); });
+hlpop.addEventListener('mousedown', e => e.preventDefault());
+$('#hlApply').onclick = applyHighlight;
+$('#hlTool').addEventListener('mousedown', e => e.preventDefault());
+$('#hlTool').onclick = () => { if (!applyHighlight()) toast('Bôi đen một đoạn trong bài đọc để highlight. Bấm vào chỗ đã highlight để xóa.', 3800); };
+passageEl.addEventListener('click', e => {
+  const m = e.target.closest('mark.hl'); if (!m) return;
+  const sel = window.getSelection(); if (sel && !sel.isCollapsed) return;
+  const p = m.parentNode; while (m.firstChild) p.insertBefore(m.firstChild, m); m.remove(); p.normalize();
+  S.hl[S.cur] = passageEl.innerHTML; persist();
+});
+document.addEventListener('mousedown', e => { if (!e.target.closest('#hlpop') && !e.target.closest('#passage')) hideHlPop(); });
+$('#paneL').addEventListener('scroll', hideHlPop);
+
+/* rời tab + chống thoát */
+/* ===================================================================
+   CHẾ ĐỘ THI NGHIÊM: toàn màn hình + phát hiện rời bài + chặn copy
+   =================================================================== */
+const FS_OK = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+const isFS = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+const needFS = () => CONFIG.STRICT_MODE && CONFIG.REQUIRE_FULLSCREEN && FS_OK && !isFS();
+function reqFS(){ if (!needFS()) return; try { const el = document.documentElement; const p = el.requestFullscreen ? el.requestFullscreen({ navigationUI:'hide' }) : el.webkitRequestFullscreen(); if (p && p.catch) p.catch(() => {}); } catch(e){} }
+function exitFS(){ try { if (isFS()) (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch(e){} }
+let wakeLock = null;
+async function keepAwake(){ try { if ('wakeLock' in navigator && !document.hidden && !wakeLock){ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } } catch(e){ wakeLock = null; } }
+function releaseAwake(){ try { if (wakeLock) wakeLock.release(); } catch(e){} wakeLock = null; }
+const KIND = { tab:'chuyển tab / mở ứng dụng khác', blur:'bấm sang cửa sổ khác', fs:'thoát toàn màn hình', gap:'đóng hoặc tải lại trang' };
+const active = () => S && S.status === 'active';
+let unloading = false;
+
+function startAway(kind){
+  if (!active() || S.away || unloading) return;
+  S.away = { t: Date.now(), k: kind }; persist();
+  if (CONFIG.STRICT_MODE) showLock('away');
+}
+function endAway(){
+  if (!active() || !S.away || document.hidden || !document.hasFocus()) return;
+  const a = S.away, d = Date.now() - a.t; S.away = null; lastTick = Date.now(); keepAwake();
+  if (d < 1000){ persist(); if (CONFIG.STRICT_MODE){ if (needFS()) showLock('resume'); else hideLock(); } return; }
+  addViolation(a.k, a.t, d);
+}
+function addViolation(kind, t, d){
+  S.vio.push({ t, d, k: kind }); persist();
+  if (!CONFIG.STRICT_MODE) return;
+  const max = CONFIG.MAX_VIOLATIONS;
+  if (max > 0 && S.vio.length >= max){ finish(false, true); return; }
+  showLock(kind === 'fs' ? 'fs' : 'warn', { d, kind });
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) startAway('tab');
+  else { lastTick = Date.now(); setTimeout(endAway, 60); }
+});
+window.addEventListener('blur', () => setTimeout(() => { if (!document.hasFocus()) startAway(document.hidden ? 'tab' : 'blur'); }, 150));
+window.addEventListener('focus', () => setTimeout(endAway, 60));
+function onFSChange(){
+  if (!active() || isFS() || !CONFIG.STRICT_MODE || !CONFIG.REQUIRE_FULLSCREEN || S.away || unloading) return;
+  setTimeout(() => { if (!active() || isFS() || S.away || document.hidden || !document.hasFocus()) return; addViolation('fs', Date.now(), 0); }, 300);
+}
+document.addEventListener('fullscreenchange', onFSChange);
+document.addEventListener('webkitfullscreenchange', onFSChange);
+window.addEventListener('beforeunload', e => { if (active()){ unloading = true; setTimeout(() => { unloading = false; }, 1500); persist(); e.preventDefault(); e.returnValue = ''; } });
+
+/* màn khóa che đề */
+function showLock(state, info){
+  const el = $('#lock'), max = CONFIG.MAX_VIOLATIONS, n = S.vio.length;
+  let title, msg, btn = 'Tiếp tục làm bài', icon = '!';
+  if (state === 'away'){ title = 'Bài thi đang bị ẩn'; msg = 'Bạn đã rời khỏi trang làm bài. Lần rời này đang được ghi lại và gửi cho giáo viên. Đồng hồ vẫn chạy.'; btn = null; }
+  else if (state === 'resume'){ icon = '↻'; title = 'Tiếp tục làm bài'; msg = 'Bấm nút bên dưới để quay lại bài thi' + (needFS() ? ' ở chế độ toàn màn hình.' : '.'); }
+  else {
+    title = 'Cảnh báo vi phạm' + (max > 0 ? ' ' + n + '/' + max : ' (lần ' + n + ')');
+    msg = (state === 'fs' ? 'Bạn đã thoát chế độ toàn màn hình.' : 'Bạn vừa rời khỏi bài thi ' + Math.max(1, Math.round(info.d / 1000)) + ' giây (' + KIND[info.kind] + ').') + ' ' +
+      (max > 0 ? 'Rời thêm ' + (max - n) + ' lần nữa, bài sẽ bị <b>tự động nộp</b>.' : 'Mọi lần rời bài đều được ghi lại cho giáo viên.');
+    if (needFS()) btn = 'Quay lại toàn màn hình';
+  }
+  el.dataset.state = state;
+  $('#lockIc').textContent = icon; $('#lockTitle').textContent = title; $('#lockMsg').innerHTML = msg;
+  $('#lockBtn').classList.toggle('hidden', !btn); if (btn) $('#lockBtn').textContent = btn;
+  el.classList.remove('hidden'); closeNav(); hideHlPop();
+}
+function hideLock(){ $('#lock').classList.add('hidden'); }
+$('#lockBtn').onclick = () => { reqFS(); keepAwake(); hideLock(); lastTick = Date.now(); };
+
+/* chặn sao chép / chuột phải / phím tắt khi đang làm bài */
+const strictOn = () => CONFIG.STRICT_MODE && active();
+const inTeacherUI = el => el && el.closest && (el.closest('#teacher') || el.closest('.overlay'));
+['copy','cut','paste','contextmenu','dragstart','drop'].forEach(ev => document.addEventListener(ev, e => {
+  if (!strictOn() || inTeacherUI(e.target)) return;
+  e.preventDefault(); if (ev === 'copy' || ev === 'cut') toast('Không sao chép được nội dung trong lúc làm bài');
+}));
+document.addEventListener('keydown', e => {
+  if (!strictOn() || inTeacherUI(e.target)) return;
+  const k = (e.key || '').toLowerCase(), mod = e.ctrlKey || e.metaKey;
+  if ((mod && !e.shiftKey && ['c','x','v','p','s','u','a','f'].includes(k)) || k === 'f12' || (mod && e.shiftKey && ['i','j','c'].includes(k)) || (e.metaKey && e.altKey && ['i','j','c'].includes(k))){ e.preventDefault(); e.stopPropagation(); }
+}, true);
+
+/* ---------------- nộp bài ---------------- */
+function finish(auto, forced){
+  if (!S || S.status !== 'active') return;
+  const now = Date.now();
+  if (S.view === 'q' && !document.hidden && !S.away) S.tsp[S.cur] += Math.min(now - lastTick, 2000);
+  if (S.away){ S.vio.push({ t: S.away.t, d: Math.max(0, Math.min(now, S.startedAt + DUR) - S.away.t), k: S.away.k }); S.away = null; }
+  clearInterval(tickTimer);
+  S.status = 'done'; S.auto = !!auto; S.forced = !!forced; S.endedAt = Math.min(now, S.startedAt + DUR);
+  const rec = toRecord(S); S.rec = rec; persist();
+  const h = load(LSK.history, []); if (!h.find(x => x.id === rec.id)){ h.unshift(rec); save(LSK.history, h); }
+  if (CONFIG.SHEET_URL){ const p = load(LSK.pending, []); if (!p.find(x => x.id === rec.id)){ p.push(rec); save(LSK.pending, p); } }
+  closeNav(); hideHlPop(); hideLock(); $('#dirPanel').classList.add('hidden');
+  $$('.overlay').forEach(o => o.remove());
+  exitFS(); releaseAwake();
+  showResult();
+  if (auto) modal('<h3>Hết giờ!</h3><p>Đã hết ' + CONFIG.DURATION_MIN + ' phút. Bài làm đã được nộp tự động.</p>', [{ text:'Xem kết quả' }]);
+  else if (forced) modal('<h3>Bài đã bị nộp tự động</h3><p>Bạn đã rời khỏi bài thi ' + S.vio.length + ' lần (giới hạn ' + CONFIG.MAX_VIOLATIONS + ' lần) nên bài làm được nộp tự động. Giáo viên sẽ thấy nhật ký các lần rời bài.</p>', [{ text:'Xem kết quả' }]);
+  flushPending();
+}
+
+/* ---------------- màn hình kết quả ---------------- */
+function showResult(){
+  show('result');
+  const rec = S.rec || toRecord(S), g = grade(rec);
+  const code = encodeRec(rec);
+  const scoreHTML = CONFIG.SHOW_SCORE_TO_STUDENT ?
+    '<div class="score-hero"><div class="big">' + g.correct + '<small> / ' + N + '</small></div><div class="lbl">câu đúng</div></div>' +
+    '<div class="stat-row"><div class="stat ok"><b>' + g.correct + '</b><span>Đúng</span></div><div class="stat bad"><b>' + g.wrong + '</b><span>Sai</span></div><div class="stat na"><b>' + g.blank + '</b><span>Bỏ trống</span></div></div>'
+    : '<p class="lead" style="margin-top:8px">Bài làm của bạn đã được ghi nhận. Giáo viên sẽ thông báo kết quả cho bạn.</p>';
+  $('#resultCard').innerHTML =
+    '<div class="brand"><div class="logo">LLST</div><div><div class="bname">Lò luyện SAT Thủ</div><div class="bsub">Kiểm tra đầu vào — Reading &amp; Writing</div></div></div>' +
+    '<h1>Đã nộp bài' + (rec.fv ? ' (do vi phạm)' : rec.auto ? ' (hết giờ)' : '') + '</h1>' +
+    '<dl class="info-grid"><dt>Học viên</dt><dd>' + esc(rec.n) + '</dd><dt>Tuổi</dt><dd>' + esc(rec.a) + '</dd><dt>Thời gian làm</dt><dd>' + mmss(g.dur) + ' / ' + CONFIG.DURATION_MIN + ':00</dd><dt>Nộp lúc</dt><dd>' + dtVN(rec.e) + '</dd></dl>' +
+    scoreHTML +
+    '<div id="sendStatus"></div>' +
+    '<div class="actions"><button class="btn" id="copyCode">Sao chép mã kết quả</button><button class="btn ghost" id="showCode">Hiện mã</button></div>' +
+    '<textarea id="codeBox" class="hidden" readonly style="width:100%;margin-top:12px;min-height:70px;font-family:ui-monospace,Menlo,monospace;font-size:12px;border:1px solid #c5cad6;border-radius:8px;padding:8px">' + code + '</textarea>' +
+    '<div class="foot-note"><button class="linkbtn" data-teacher>Dành cho giáo viên</button></div>';
+  const msg = '[LLST] Kết quả kiểm tra đầu vào R&W\nHọc viên: ' + rec.n + ' — ' + rec.a + ' tuổi\n' +
+    (CONFIG.SHOW_SCORE_TO_STUDENT ? 'Đúng ' + g.correct + '/' + N + ' · Sai ' + g.wrong + ' · Bỏ trống ' + g.blank + '\n' : '') +
+    'Mã kết quả: ' + code;
+  $('#copyCode').onclick = async () => { const ok = await copyText(msg); toast(ok ? 'Đã sao chép — dán vào Zalo/Messenger gửi giáo viên' : 'Không sao chép được, bấm “Hiện mã” để copy tay', 3500); };
+  $('#showCode').onclick = () => { const b = $('#codeBox'); b.classList.toggle('hidden'); b.select(); };
+  renderSendStatus();
+}
+function renderSendStatus(){
+  const el = $('#sendStatus'); if (!el) return;
+  const pend = load(LSK.pending, []);
+  const mine = S && S.rec ? S.rec.id : null;
+  let cls, txt;
+  if (!CONFIG.SHEET_URL){ cls = 'wait'; txt = 'Bấm <b>Sao chép mã kết quả</b> rồi dán vào Zalo/Messenger gửi cho giáo viên.'; }
+  else if (mine && !pend.find(x => x.id === mine)){ cls = 'ok'; txt = '✓ Đã gửi kết quả cho giáo viên.'; }
+  else if (sendState === 'sending' || sendState === 'idle'){ cls = 'wait'; txt = 'Đang gửi kết quả cho giáo viên…'; }
+  else { cls = 'fail'; txt = 'Chưa gửi được kết quả (kiểm tra kết nối mạng). Trang sẽ tự gửi lại khi có mạng — hoặc bấm <b>Sao chép mã kết quả</b> gửi giáo viên qua Zalo. <button class="linkbtn" id="retrySend">Thử gửi lại</button>'; }
+  el.innerHTML = '<div class="send-status ' + cls + '">' + txt + '</div>';
+  const rb = $('#retrySend'); if (rb) rb.onclick = flushPending;
+}
+
+/* ===================================================================
+   TRANG GIÁO VIÊN
+   =================================================================== */
+document.addEventListener('click', e => { if (e.target.closest('[data-teacher]')) askPin(); });
+document.addEventListener('keydown', e => { if (e.ctrlKey && e.shiftKey && (e.key === 'G' || e.key === 'g')){ e.preventDefault(); askPin(); } });
+window.addEventListener('hashchange', () => { if (location.hash === '#gv') askPin(); });
+
+function askPin(){
+  if ($('#teacher')) return;
+  const ov = modal('<h3>Trang giáo viên</h3><p>Nhập PIN giáo viên:</p><input id="pinIn" type="password" style="width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid #b9bfcc;border-radius:8px" autocomplete="off"><div class="err" id="pinErr" style="margin-top:8px"></div>',
+    [{ text:'Hủy', cls:'ghost' }, { text:'Vào', keep:true, onClick: tryPin }]);
+  const inp = $('#pinIn', ov); inp.focus();
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryPin(ov); });
+  function tryPin(o){
+    if (cyrb53('pin|' + inp.value.trim()) === CONFIG.TEACHER_PIN_HASH){ o.remove(); openTeacher(); }
+    else { $('#pinErr', o).textContent = 'PIN không đúng.'; inp.select(); }
+  }
+}
+function openTeacher(){
+  const t = document.createElement('div'); t.id = 'teacher';
+  t.innerHTML = '<div class="t-top"><h2>Trang giáo viên · ' + esc(CONFIG.SECTION_LABEL) + '</h2><button class="btn ghost sm" id="tClose">Đóng</button></div><div class="t-wrap" id="tWrap"></div>';
+  document.body.appendChild(t);
+  $('#tClose').onclick = () => { t.remove(); if (location.hash === '#gv') history.replaceState(null, '', location.pathname + location.search); if (S && S.status === 'active') lastTick = Date.now(); };
+  tHome();
+}
+function tHome(){
+  const W = $('#tWrap'); const hist = load(LSK.history, []); const pend = load(LSK.pending, []);
+  let cur = '<p class="muted">Chưa có học viên nào đang làm bài trên máy này.</p>';
+  if (S && S.status === 'active'){ const done = S.answers.filter(a => a != null).length; cur = '<p><b>' + esc(S.name) + '</b> (' + esc(S.age) + ' tuổi) đang làm bài — đã trả lời ' + done + '/' + N + ' câu, còn ' + mmss(Math.max(0, remaining())) + '.</p>'; }
+  else if (S && S.status === 'done'){ cur = '<p>Học viên gần nhất: <b>' + esc(S.name) + '</b> — đã nộp lúc ' + dtVN(S.endedAt) + '.</p>'; }
+  W.innerHTML =
+    '<div class="t-card"><h3>Kết quả trên máy này (' + hist.length + ')</h3>' +
+      (hist.length ? '<div style="overflow:auto"><table class="hist"><thead><tr><th>Nộp lúc</th><th>Họ tên</th><th>Tuổi</th><th>Đúng</th><th>Sai</th><th>Bỏ trống</th><th>Thời gian</th><th>Rời bài</th>' + (CONFIG.SHEET_URL ? '<th>Google Sheet</th>' : '') + '</tr></thead><tbody>' +
+        hist.map((r, k) => { const g = grade(r); return '<tr data-h="' + k + '"><td>' + dtVN(r.e) + '</td><td><b>' + esc(r.n) + '</b></td><td>' + esc(r.a) + '</td><td class="okc">' + g.correct + '</td><td class="badc">' + g.wrong + '</td><td>' + g.blank + '</td><td>' + mmss(g.dur) + '</td><td>' + (r.lv ? '<span class="badc">' + r.lv + '</span>' + (r.fv ? ' (tự nộp)' : '') : '0') + '</td>' + (CONFIG.SHEET_URL ? '<td>' + (pend.find(x => x.id === r.id) ? '<span class="badc">Chưa gửi</span>' : '<span class="okc">✓</span>') + '</td>' : '') + '</tr>'; }).join('') +
+        '</tbody></table></div><div class="actions"><button class="btn sm" id="tCsv">Tải file CSV (Excel)</button><button class="btn ghost sm" id="tClear">Xóa lịch sử trên máy</button></div>'
+        : '<p class="muted">Chưa có bài nộp nào trên máy này. Học viên làm ở nhà thì kết quả nằm trong Google Sheet, hoặc dán mã học viên gửi vào ô bên dưới.</p>') +
+    '</div>' +
+    '<div class="t-card"><h3>Xem kết quả từ mã học viên gửi</h3><p class="muted" style="margin-top:-6px">Dán nguyên tin nhắn học viên gửi qua Zalo/Messenger (có dòng “Mã kết quả: LLST1…”).</p><textarea id="tCode" placeholder="LLST1.…"></textarea><div class="err" id="tCodeErr"></div><button class="btn sm" id="tDecode">Xem kết quả</button></div>' +
+    '<div class="t-card"><h3>Phiên làm bài trên máy này</h3>' + cur + '<button class="btn ghost sm" id="tReset">Cho học viên mới làm bài</button> <span class="muted">— xóa phiên hiện tại để người khác làm (lịch sử kết quả vẫn giữ).</span></div>' +
+    '<div class="t-card"><h3>Cài đặt</h3>' +
+      '<p>Google Sheet: ' + (CONFIG.SHEET_URL ? '<span class="okc">đã kết nối</span>' + (pend.length ? ' · <span class="badc">' + pend.length + ' bài chưa gửi</span> <button class="btn sm" id="tResend">Gửi lại</button>' : ' · không có bài tồn đọng') : '<span class="badc">chưa kết nối</span> — dán link Web App vào <code class="k">SHEET_URL</code> trong file HTML.') + '</p>' +
+      '<p>Học viên ' + (CONFIG.SHOW_SCORE_TO_STUDENT ? '<b>được</b>' : '<b>không</b> được') + ' xem số câu đúng/sai sau khi nộp (<code class="k">SHOW_SCORE_TO_STUDENT</code>).</p>' +
+      '<p style="margin-bottom:6px">Đổi PIN giáo viên: <input type="text" id="tNewPin" placeholder="PIN mới" style="width:160px"> <button class="btn ghost sm" id="tGenPin">Tạo mã</button></p><div id="tPinOut" class="muted"></div>' +
+      '<p class="muted" style="margin-top:12px">Mở nhanh trang này: phím tắt <b>Ctrl + Shift + G</b>, hoặc thêm <code class="k">#gv</code> vào cuối đường link.</p>' +
+    '</div>';
+  $$('#tWrap tr[data-h]').forEach(tr => tr.onclick = () => tDetail(hist[+tr.dataset.h], true));
+  const csv = $('#tCsv'); if (csv) csv.onclick = () => downloadCSV(hist);
+  const clr = $('#tClear'); if (clr) clr.onclick = () => modal('<h3>Xóa lịch sử?</h3><p>Xóa ' + hist.length + ' kết quả lưu trên máy này. Dữ liệu trong Google Sheet không bị ảnh hưởng.</p>', [{ text:'Hủy', cls:'ghost' }, { text:'Xóa', onClick: () => { save(LSK.history, []); tHome(); } }]);
+  $('#tDecode').onclick = () => { try { const { rec, valid } = decodeCode($('#tCode').value); if (rec.t && rec.t !== CONFIG.TEST_ID) throw new Error('Mã này thuộc đề khác (' + rec.t + ').'); tDetail(rec, valid); } catch(err){ $('#tCodeErr').textContent = err.message || 'Mã không hợp lệ.'; } };
+  $('#tReset').onclick = () => modal('<h3>Cho học viên mới làm bài?</h3><p>' + (S && S.status === 'active' ? '<b>Cảnh báo:</b> ' + esc(S.name) + ' đang làm dở — bài làm dở sẽ bị hủy.' : 'Phiên hiện tại sẽ được xóa, màn hình quay về trang nhập tên.') + '</p>',
+    [{ text:'Hủy', cls:'ghost' }, { text:'Đồng ý', onClick: () => { clearInterval(tickTimer); del(LSK.session); S = null; $('#teacher').remove(); $('#fName').value = ''; $('#fAge').value = ''; show('intake'); } }]);
+  const rs = $('#tResend'); if (rs) rs.onclick = async () => { await flushPending(); tHome(); };
+  $('#tGenPin').onclick = () => { const p = $('#tNewPin').value.trim(); if (p.length < 4){ $('#tPinOut').textContent = 'PIN tối thiểu 4 ký tự.'; return; } $('#tPinOut').innerHTML = 'Sửa dòng trong file HTML thành: <code class="k">TEACHER_PIN_HASH: \'' + cyrb53('pin|' + p) + '\',</code>'; };
+}
+function bar(label, a){ const pct = a[1] ? Math.round(a[0]/a[1]*100) : 0; return '<div class="bar"><div class="bl"><span>' + label + '</span><b>' + a[0] + '/' + a[1] + '</b></div><div class="bt"><i style="width:' + pct + '%"></i></div></div>'; }
+function tDetail(rec, valid){
+  const g = grade(rec); const W = $('#tWrap'); window.scrollTo(0,0); $('#teacher').scrollTop = 0;
+  W.innerHTML =
+    '<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap"><button class="btn ghost sm" id="tBack">← Quay lại</button><button class="btn ghost sm" id="tPrint">In / Lưu PDF</button></div>' +
+    '<div class="t-card"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start"><div><h3 style="font-size:20px;margin:0 0 4px">' + esc(rec.n) + ' <span class="muted" style="font-size:15px;font-weight:600">· ' + esc(rec.a) + ' tuổi</span></h3>' +
+      '<div class="muted">Bắt đầu ' + dtVN(rec.s) + ' · Nộp ' + dtVN(rec.e) + (rec.auto ? ' · <b>tự nộp khi hết giờ</b>' : '') + ' · Rời bài <b>' + (rec.lv || 0) + ' lần</b>' + (rec.lv ? ' (tổng ' + durVN((rec.vt || 0) * 1000) + ')' : '') + '</div></div>' +
+      '<div>' + (rec.fv ? '<span class="tag H">Bị tự nộp do vi phạm</span> ' : '') + (valid ? '<span class="tag E">Mã hợp lệ</span>' : '<span class="tag H">⚠ Mã có dấu hiệu bị sửa</span>') + '</div></div>' +
+      '<div class="t-kpis" style="margin-top:16px"><div class="kpi ok"><b>' + g.correct + '<span style="font-size:15px;color:#888">/' + N + '</span></b><span>Câu đúng</span></div><div class="kpi bad"><b>' + g.wrong + '</b><span>Câu sai</span></div><div class="kpi"><b>' + g.blank + '</b><span>Bỏ trống</span></div><div class="kpi trap"><b>' + g.traps + '</b><span>Dính bẫy (chọn nhiễu mạnh nhất)</span></div><div class="kpi"><b>' + mmss(g.dur) + '</b><span>Thời gian làm / ' + CONFIG.DURATION_MIN + ':00</span></div></div></div>' +
+    '<div class="t-card"><h3>Theo mảng kiến thức</h3><div class="bars">' + Object.keys(DOMAINS).map(k => bar(DOMAINS[k], g.dom[k])).join('') + '</div>' +
+      '<h3 style="margin-top:18px">Theo độ khó</h3><div class="bars">' + DIFFS.map(k => bar(k, g.dif[k])).join('') + '</div></div>' +
+    (rec.vio && rec.vio.length ? '<div class="t-card"><h3>Nhật ký rời bài (' + rec.vio.length + ' lần)</h3><table class="det"><thead><tr><th>#</th><th>Thời điểm (tính từ lúc bắt đầu)</th><th>Hành vi</th><th>Thời gian rời</th></tr></thead><tbody>' +
+      rec.vio.map((v, k) => '<tr><td>' + (k+1) + '</td><td>Phút ' + mmss(v[0]*1000) + '</td><td>' + (KIND[v[2]] || v[2]) + '</td><td>' + (v[2] === 'fs' ? '—' : durVN(v[1]*1000)) + '</td></tr>').join('') + '</tbody></table></div>' : '') +
+    '<div class="t-card"><h3>Chi tiết từng câu</h3><div style="overflow:auto"><table class="det"><thead><tr><th>Câu</th><th>Dạng</th><th>Độ khó</th><th>HS chọn</th><th>Đáp án</th><th>Kết quả</th><th>Ghi chú</th><th>Thời gian</th></tr></thead><tbody>' +
+      g.per.map(p => { const st = p.ok === null ? 'na' : p.ok ? 'ok' : 'bad';
+        return '<tr class="' + st + '"><td><b>' + (p.i+1) + '</b></td><td>' + p.q.type + '</td><td><span class="tag ' + p.q.diff[0] + '">' + p.q.diff + '</span></td>' +
+          '<td>' + (p.a === -1 ? '—' : '<span class="ltrc ' + (p.ok ? 'ok' : 'bad') + '">' + L[p.a] + '</span>') + '</td><td><span class="ltrc key">' + L[p.k] + '</span></td>' +
+          '<td class="kq">' + (p.ok === null ? 'Bỏ trống' : p.ok ? 'Đúng' : 'Sai') + '</td><td>' + (p.trap ? '<span class="tag trap">Dính bẫy ' + L[TRAP[p.i]] + '</span>' : '') + (p.mk ? '<span class="tag rev">Mark for Review</span>' : '') + '</td>' +
+          '<td>' + (p.t ? mmss(p.t*1000) : '—') + '</td></tr>'; }).join('') +
+    '</tbody></table></div><p class="muted" style="margin-top:10px">Câu sai: ' + (g.wrongList.join(', ') || 'không có') + ' · Bỏ trống: ' + (g.blankList.join(', ') || 'không có') + '</p></div>';
+  $('#tBack').onclick = tHome;
+  $('#tPrint').onclick = () => { try { window.print(); } catch(e){} };
+}
+function downloadCSV(hist){
+  const q = v => { v = String(v == null ? '' : v); return /[",\n;]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v; };
+  const lines = [HEADERS.map(q).join(',')].concat(hist.map(r => buildRow(r, grade(r)).map(q).join(',')));
+  const blob = new Blob(['﻿' + lines.join('\r\n')], { type:'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ket-qua-dau-vao-RW-' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+/* ---------------- khởi động ---------------- */
+if (S && S.status === 'active'){
+  if (!S.vio) S.vio = [];
+  lastTick = Date.now();
+  const seen = S.lastSeen || S.startedAt; let fresh = false;
+  if (S.away){ const a = S.away; S.away = null; S.vio.push({ t: a.t, d: Math.max(0, Math.min(Date.now(), S.startedAt + DUR) - a.t), k: a.k }); fresh = true; }
+  else if (Date.now() - seen > 15000){ S.vio.push({ t: seen, d: Math.min(Date.now(), S.startedAt + DUR) - seen, k: 'gap' }); fresh = true; }
+  if (remaining() <= 0) finish(true);
+  else if (CONFIG.STRICT_MODE && CONFIG.MAX_VIOLATIONS > 0 && S.vio.length >= CONFIG.MAX_VIOLATIONS) finish(false, true);
+  else {
+    enterTest();
+    if (CONFIG.STRICT_MODE){ const v = S.vio[S.vio.length - 1]; if (fresh) showLock('warn', { d: v.d, kind: v.k }); else showLock('resume'); }
+  }
+} else if (S && S.status === 'done'){ showResult(); }
+else { show('intake'); }
+flushPending();
+if (location.hash === '#gv') askPin();
+})();
+
+</script>
+</body>
+</html>
